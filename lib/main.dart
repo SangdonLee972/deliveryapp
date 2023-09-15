@@ -1,5 +1,5 @@
-
 import 'package:dronapp/MainPage/mainPage.dart';
+import 'package:dronapp/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    //options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
 
   if (FirebaseAuth.instance.currentUser != null) {
@@ -22,7 +22,7 @@ void main() async {
       login.signout();
     }
   }
- // await FirebaseApi().fcmSetting();
+  // await FirebaseApi().fcmSetting();
 
   runApp(const MyApp());
 }
@@ -42,9 +42,6 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.purple,
             ),
-            home: const LoginPage()
-
-
-        ));
+            home: const LoginPage()));
   }
 }
