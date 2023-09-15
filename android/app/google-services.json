@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "667467650715",
+    "project_id": "dronquick-84db1",
+    "storage_bucket": "dronquick-84db1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667467650715:android:58ded974db6f4e7abcd83e",
+        "android_client_info": {
+          "package_name": "com.example.dronapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxe1Laj7O9FaWjQwBcH4XOKc5LMNd1SO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
