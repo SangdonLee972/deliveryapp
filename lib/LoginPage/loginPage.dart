@@ -1,7 +1,3 @@
-import 'dart:math';
-
-
-import 'package:dronapp/GMPage/gmPage.dart';
 import 'package:dronapp/LoginPage/login_function.dart';
 import 'package:dronapp/LoginPage/signup_page.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +21,7 @@ class LoginPageState extends State<LoginPage> {
   bool isClick = false;
   String? emailError;
   String? pwError;
-  Color backColor = const Color.fromARGB(255, 201, 254, 202);
+  Color backColor = Color.fromARGB(255, 255, 255, 255);
 
   @override
   void dispose() {
@@ -70,16 +66,14 @@ class LoginPageState extends State<LoginPage> {
             print('빌더 호출');
 
             if (UserInstance.instance.type == 'user') {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const MainPage()));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const MainPage()));
             } else if (UserInstance.instance.type == 'store') {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const gmPage()));
+                  MaterialPageRoute(builder: (context) => const MainPage()));
             } else if (UserInstance.instance.type == 'Manager') {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const gmPage()));
+                  MaterialPageRoute(builder: (context) => const MainPage()));
             }
           } else {
             if (status == -1) {
@@ -104,8 +98,8 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          child: body()),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      body: Container(child: body()),
     );
   }
 
@@ -117,7 +111,6 @@ class LoginPageState extends State<LoginPage> {
         width: double.maxFinite,
       ),
       Container(
-
         width: screenWidth * 0.85,
         padding: EdgeInsets.symmetric(vertical: screenWidth * 0.05),
         decoration: BoxDecoration(boxShadow: const [
@@ -133,19 +126,18 @@ class LoginPageState extends State<LoginPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
               child: Text(
-
                 '드론 배송 로그인',
-
-                style: TextStyle(fontSize: screenWidth * 0.06,fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: screenWidth * 0.06, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
               child: Text(
-
                 '로그인하여 서비스를 즐겨보세요!',
-
-                style: TextStyle(fontSize: screenWidth * 0.04,),
+                style: TextStyle(
+                  fontSize: screenWidth * 0.04,
+                ),
               ),
             ),
             SizedBox(
@@ -196,7 +188,8 @@ class LoginPageState extends State<LoginPage> {
                     login();
                   },
                   style: const ButtonStyle(
-                      overlayColor: MaterialStatePropertyAll(Colors.transparent),
+                      overlayColor:
+                          MaterialStatePropertyAll(Colors.transparent),
                       padding: MaterialStatePropertyAll(EdgeInsets.zero)),
                   child: Container(
                     width: screenWidth * 0.7,
@@ -243,10 +236,7 @@ class LoginPageState extends State<LoginPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SignUpPage()
-                      )
-
-                  );
+                          builder: (context) => const SignUpPage()));
 
                   print('네비게이터 호출');
                 },
@@ -260,8 +250,6 @@ class LoginPageState extends State<LoginPage> {
                   style: TextStyle(
                       color: Colors.blue, fontSize: screenWidth * 0.04),
                 )),
-
-
           ],
         ),
       )

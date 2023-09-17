@@ -1,4 +1,3 @@
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +23,7 @@ class _SignUpPageState extends State<SignUpPage> {
     TextEditingController()
   ];
 
-  List<String> titles = ['이름', '주소', '연락처', '이메일', '비밀번호', '비밀번호 재확인'];
+  List<String> titles = ['이름', '주소', '연락처', '이메일', '비밀번호', '비밀번호 재입력'];
   List<FocusNode> focusList = [
     FocusNode(),
     FocusNode(),
@@ -47,8 +46,6 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void signUp() async {
-
-
     isClick = false;
     if (!isClick) {
       isClick = true;
@@ -118,15 +115,15 @@ class _SignUpPageState extends State<SignUpPage> {
           });
           focusBoard(1);
         } else {
-           String token = await FirebaseMessaging.instance.getToken() as String;
+          String token = await FirebaseMessaging.instance.getToken() as String;
 
           bool trySingup = await emailLogin.singup(
-              address: controllers[1].text,
-              phoneNumber: controllers[2].text,
-              email: controllers[3].text,
-              password: controllers[4].text,
-              name: controllers[0].text,
-              fcmid: token,
+            address: controllers[1].text,
+            phoneNumber: controllers[2].text,
+            email: controllers[3].text,
+            password: controllers[4].text,
+            name: controllers[0].text,
+            fcmid: token,
           );
 
           Navigator.pop(context);
@@ -160,12 +157,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.fill, image: AssetImage('asset/img/sky.jpg'))),
-        child: body(),
-      ),
+      body: body(),
     );
   }
 
@@ -203,23 +195,21 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Column(children: [
           Container(
             width: screenWidth * 0.85,
-
             padding: EdgeInsets.symmetric(vertical: screenWidth * 0.05),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child:
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,children: [
-
-
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.00),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         '회원가입',
-                        style: TextStyle(fontSize: screenWidth * 0.09,fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: screenWidth * 0.09,
+                            fontWeight: FontWeight.bold),
                       ),
                       Text(
                         '회원이 되어 다양한 혜택을 경험해보세요!',
@@ -228,8 +218,38 @@ class _SignUpPageState extends State<SignUpPage> {
                       SizedBox(
                         height: screenWidth * 0.07,
                       ),
-                      for (int i = 0; i < 6; i++)
-                        MyTextFormField(i, screenWidth),
+                      for (int i = 0; i < 5; i++)
+                        SizedBox(
+                          height: screenWidth * 0.18,
+                          child: MyTextFormField(i, screenWidth),
+                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: screenWidth * 0.7,
+                            child: TextFormField(
+                              controller: controllers[5],
+                              cursorColor: Colors.black,
+                              focusNode: focusList[5],
+                              onFieldSubmitted: (value) {
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                signUp();
+                              },
+                              decoration: InputDecoration(
+                                  hintText: '${titles[5]}',
+                                  errorText: strings[5],
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: screenWidth * 0.05,
+                                  ),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10))),
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(
                         height: screenWidth * 0.1,
                       ),
@@ -243,7 +263,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               padding:
                                   MaterialStatePropertyAll(EdgeInsets.zero)),
                           child: Container(
-                            width: screenWidth * 0.7,
+                            width: screenWidth * 0.9,
                             height: screenWidth * 0.13,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -265,37 +285,39 @@ class _SignUpPageState extends State<SignUpPage> {
     ]));
   }
 
-  Column MyTextFormField(int idx, double screenWidth) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Row MyTextFormField(int idx, double screenWidth) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           titles[idx],
         ),
         SizedBox(
-          height: screenWidth * 0.01,
-        ),
-        TextFormField(
-          controller: controllers[idx],
-          cursorColor: Colors.black,
-          focusNode: focusList[idx],
-          onFieldSubmitted: (value) {
-            if (idx == 5) {
-              FocusManager.instance.primaryFocus?.unfocus();
-              signUp();
-            } else {
-              focusBoard(idx + 1);
-            }
-          },
-          decoration: InputDecoration(
-              hintText: '${titles[idx]} 입력',
-              errorText: strings[idx],
-              border: const OutlineInputBorder(),
-              focusedBorder: const OutlineInputBorder()),
-        ),
-        SizedBox(
-          height: screenWidth * 0.05,
-        ),
+            width: screenWidth * 0.7,
+            child: TextFormField(
+              controller: controllers[idx],
+              cursorColor: Colors.black,
+              focusNode: focusList[idx],
+              onFieldSubmitted: (value) {
+                if (idx == 5) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  signUp();
+                } else {
+                  focusBoard(idx + 1);
+                }
+              },
+              decoration: InputDecoration(
+                  hintText: '${titles[idx]} 입력',
+                  errorText: strings[idx],
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.05,
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10))),
+            )),
       ],
     );
   }
