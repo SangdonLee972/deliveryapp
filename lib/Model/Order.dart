@@ -48,25 +48,28 @@ class OrderModel {
       status: map['status'] ?? '',
       userId: map['userId'] ?? '',
       picture: map['picture'] ?? '',
-      datetime: map['datetime'] != null ? (map['datetime'] as Timestamp).toDate() : DateTime.now(),
+      datetime: map['datetime'] is Timestamp
+          ? (map['datetime'] as Timestamp).toDate()
+          : DateTime.now(), // Timestamp 타입으로 변환
       price: map['price'] != null ? map['price'].toDouble() : 0.0,
-      type: map['type'] != null ? List<String>.from(map['type']) : [], // List 반환
-      obj: map['obj'] != null ? OBJ.fromMap(map['obj']) :
-      OBJ(
+      type: map['type'] != null ? List<String>.from(map['type']) : [],
+      obj: map['obj'] != null ? OBJ.fromMap(map['obj']) : OBJ(
         objUrl: 'your_obj_url',
         objName: 'your_obj_name',
         objPrice: 10.0,
         objCount: 2,
         objSize: 'large',
         objMass: 0.5,
-      ), // 기본값 설정
-      deliveryInfo: map['deliveryInfo'] != null ? DeliveryInformation.fromMap(map['deliveryInfo']) :
-      DeliveryInformation(
+      ),
+      deliveryInfo: map['deliveryInfo'] != null
+          ? DeliveryInformation.fromMap(map['deliveryInfo'])
+          : DeliveryInformation(
         name: 'John Doe',
         phoneNumber: '123-456-7890',
         address: '123 Main St',
-      ), // 기본값 설정
+      ),
     );
   }
+
 
 }

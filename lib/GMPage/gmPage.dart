@@ -27,7 +27,7 @@ class gmPageState extends State<gmPage> {
     await orderService.addOrder(
       '확인중', // status
       'user123', // userId
-      'image_url', // picture
+      '', // picture
       DateTime.now(), // datetime
       50.0, // price
       ['type1', 'type2'], // type

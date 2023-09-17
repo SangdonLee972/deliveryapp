@@ -66,6 +66,7 @@ class ListItemWidgetState extends State<ListItemWidget> {
 
       // 위의 조건에 해당하지 않는 경우에 대한 처리
     }
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Card(
       elevation: 4.0, // <-- 카드의 그림자 깊이
@@ -111,49 +112,31 @@ class ListItemWidgetState extends State<ListItemWidget> {
                     ],
                   ),
                   Text(formatISOToFullDateTime(widget.items['datetime'] as String)),
-                  Text('주문자 정보 : ${deliveryInfo['name']}'),
+                  Text('주문자 이름 : ${deliveryInfo['name']}'),
+
+                  Text('현재 배송상태 : ${widget.items['status']}'),
+
                   if (widget.items['obj'] != null)
 
                 Text(
-                '- ${objMap['objPrice']}  ${objMap['objName']} ${objMap['objSize']}',
-                style: TextStyle(color: Colors.black45, fontSize: 14),
+                '물품 가격 :${objMap['objPrice']}',
+                style: TextStyle(color: Colors.black45, fontSize: screenWidth*0.03),
                 ),
+
                   Text(
-                    '  총합 가격: 0 원',
+                    '물품 이름: ${objMap['objName']}',
+                    style: TextStyle(color: Colors.black45, fontSize: screenWidth*0.03),
+                  ),
+                  Text(
+                    '물품 크기: ${objMap['objMass']}',
+                    style: TextStyle(color: Colors.black45, fontSize: screenWidth*0.03),
+                  ),
+                  Text(
+                    '총합 가격: 0 원',
                     style: TextStyle(
                       color: Colors.black45,
                     ),
                   ),
-                  if (widget.items['status'] == '배송 수락')
-                    Row(
-                      children: [
-                        Text('현재 주문 현황: ${widget.items['status']}'),
-                        PullDownButton(
-                          itemBuilder: (context) => [
-                            PullDownMenuItem(
-                              title: '상품 준비중',
-                              onTap: () async {
-
-                              //  await _updateOrderStatus('상품 준비중');
-                              },
-                            ),
-
-                            PullDownMenuItem(
-                              title: '복귀 준비 완료',
-                              onTap: () async {
-                               // await _updateOrderStatus('복귀 준비 완료');
-                              },
-                            ),
-                          ],
-                          buttonBuilder: (context, showMenu) => CupertinoButton(
-                            onPressed: showMenu,
-                            padding: EdgeInsets.zero,
-                            child: const Icon(CupertinoIcons.ellipsis_circle),
-                          ),
-                        )
-                      ],
-
-                    ),
 
 
 
@@ -164,10 +147,11 @@ class ListItemWidgetState extends State<ListItemWidget> {
                   padding: const EdgeInsets.all(10.0),
                   child: IconButton(
                       style: ElevatedButton.styleFrom(
+
                           backgroundColor: Colors.blue
                       ),
                       onPressed: () {
-                        setState(() async{
+                        setState(() {
                           // 주문 거절인 경우
                           Navigator.push(
                             context,
@@ -181,7 +165,7 @@ class ListItemWidgetState extends State<ListItemWidget> {
                         });
 
                         // Get the store ID from the items map (assuming it's stored there)
-                      }, icon: Icon(Icons.add),
+                      }, icon: Icon(Icons.chevron_right),
 
 
 

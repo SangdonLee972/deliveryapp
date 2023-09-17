@@ -7,7 +7,7 @@ class OrderService {
   FirebaseFirestore.instance.collection('orders');
 
   Future<void> createOrder(OrderModel order) async {
-    await ordersCollection.doc('orders').set({
+    await ordersCollection.doc(order.id).set({
       'id': order.id,
       'status': order.status,
       'userId': order.userId,
@@ -65,7 +65,19 @@ class OrderService {
   }
 
 
-
+  Future<OrderModel?> getOrderById(String orderId) async {
+    try {
+      DocumentSnapshot orderSnapshot = await ordersCollection.doc(orderId).get();
+      if (orderSnapshot.exists) {
+        return OrderModel.fromMap(orderSnapshot.data() as Map<String, dynamic>);
+      } else {
+        return null; // 주문이 존재하지 않는 경우 null 반환
+      }
+    } catch (e) {
+      print('Error getting order by ID: $e');
+      return null; // 에러 발생 시 null 반환
+    }
+  }
   Stream<List<OrderModel>> getAllOrdersStream() {
     return FirebaseFirestore.instance
         .collection('orders')
