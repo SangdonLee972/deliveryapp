@@ -4,7 +4,7 @@ import '../Model/User.dart';
 
 class UserService {
   final CollectionReference usersCollection =
-  FirebaseFirestore.instance.collection('users');
+      FirebaseFirestore.instance.collection('users');
 
   Future<void> createUser(UserInstance user) async {
     await usersCollection.add({
@@ -15,6 +15,12 @@ class UserService {
       'username': user.name,
       'orders': user.orders,
       'type': user.type,
+    });
+  }
+
+  Future<void> addOrder(String userId, String orderId) async {
+    await usersCollection.doc(userId).update({
+      'orders': FieldValue.arrayUnion([orderId])
     });
   }
 

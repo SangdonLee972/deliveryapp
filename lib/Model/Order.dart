@@ -30,7 +30,7 @@ class OrderModel {
       'status': status,
       'userId': userId,
       'picture': picture,
-      'datetime': datetime,
+      'datetime': datetime.toIso8601String(),
       'price': price,
       'type': type,
       'obj': obj.toMap(), // OBJ 객체를 Map으로 변환
@@ -44,12 +44,12 @@ class OrderModel {
       status: map['status'],
       userId: map['userId'],
       picture: map['picture'],
-      datetime: map['datetime'],
+      datetime: map['datetime'].toDate(),
       price: map['price'],
       type: List<String>.from(map['type']),
       obj: OBJ.fromMap(map['obj']), // Map을 OBJ 객체로 변환
-      deliveryInfo: DeliveryInformation.fromMap(map['deliveryInfo']), // Map을 DeliveryInformation 객체로 변환
+      deliveryInfo: DeliveryInformation.fromMap(
+          map['deliveryInfo']), // Map을 DeliveryInformation 객체로 변환
     );
   }
-
 }
