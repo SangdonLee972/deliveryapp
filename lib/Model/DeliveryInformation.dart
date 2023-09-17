@@ -19,9 +19,9 @@ class DeliveryInformation {
 
   static DeliveryInformation fromMap(Map<String, dynamic> map) {
     return DeliveryInformation(
-      name: map['name'],
-      phoneNumber: map['phoneNumber'],
-      address: map['address'],
+      name: map['name'] ?? '', // 기본값 설정
+      phoneNumber: map['phoneNumber'] ?? '', // 기본값 설정
+      address: map['address'] ?? '', // 기본값 설정
     );
   }
 }
