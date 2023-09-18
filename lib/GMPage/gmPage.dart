@@ -1,5 +1,3 @@
-// cushopPage.dart
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -53,19 +51,19 @@ class gmPageState extends State<gmPage> {
     double screenWidth = MediaQuery.of(context).size.width;
     return isLoading
         ? Scaffold(
-        appBar: AppBar(
-          title: Text('배송 신청 목록'),
-          backgroundColor: Colors.blue,
-        ),
-        drawer: Drawer(
-            child: ListView(padding: EdgeInsets.zero, children: [
+            appBar: AppBar(
+              title: Text('배송 신청 목록'),
+              backgroundColor: Colors.blue,
+            ),
+            drawer: Drawer(
+                child: ListView(padding: EdgeInsets.zero, children: [
               Container(
                 padding: EdgeInsets.only(left: 15, bottom: 15),
                 height: screenWidth * 0.4,
                 decoration: const BoxDecoration(
                     color: Colors.blue,
                     borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(30))),
+                        BorderRadius.vertical(bottom: Radius.circular(30))),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -104,12 +102,15 @@ class gmPageState extends State<gmPage> {
                 title: Text('회원정보'),
               ),
             ])),
-        body: StreamBuilder<List<OrderModel>>(
+            body: StreamBuilder<List<OrderModel>>(
+              stream: orderService.getAllOrdersStream(), // 스트림을 얻는 메서드 활용
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<OrderModel> orderHistory = snapshot.data!;
 
-          stream: orderService.getAllOrdersStream(), // 스트림을 얻는 메서드 활용
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<OrderModel> orderHistory = snapshot.data!;
+                  if (orderHistory.isEmpty) {
+                    return Center(child: Text('주문 내역이 없습니다.'));
+                  }
 
               if (orderHistory.isEmpty) {
                 return Center(child: Text('주문 내역이 없습니다.'));
@@ -118,72 +119,72 @@ class gmPageState extends State<gmPage> {
               DateTime? lastDate;
               // '상품 인수'인 주문만 필터링하고 '상품 인수'인 주문이 있을 때 print를 실행합니다.
 
-              return ListView.builder(
-                itemCount: orderHistory.length,
-                itemBuilder: (context, index) {
-                  Map<String, dynamic> orderMap =
-                  orderHistory[index].toMap();
-                  DateTime nowDate = orderHistory[index].datetime;
-                  print(nowDate);
-                  if (lastDate == null ||
-                      (lastDate!.year != nowDate.year ||
-                          lastDate!.month != nowDate.month ||
-                          lastDate!.day != nowDate.day)) {
-                    lastDate = orderHistory[index].datetime;
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                  return ListView.builder(
+                    itemCount: orderHistory.length,
+                    itemBuilder: (context, index) {
+                      Map<String, dynamic> orderMap =
+                          orderHistory[index].toMap();
+                      DateTime nowDate = orderHistory[index].datetime;
+                      print(nowDate);
+                      if (lastDate == null ||
+                          (lastDate!.year != nowDate.year ||
+                              lastDate!.month != nowDate.month ||
+                              lastDate!.day != nowDate.day)) {
+                        lastDate = orderHistory[index].datetime;
+                        return Column(
                           children: [
-                            Container(
-                              width: screenWidth * 0.32,
-                              height: 1,
-                              color: Colors.black26,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: screenWidth * 0.32,
+                                  height: 1,
+                                  color: Colors.black26,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                  height: screenWidth * 0.1,
+                                ),
+                                Text(
+                                  DateFormat('yyyy년MM월dd일')
+                                      .format(orderHistory[index].datetime),
+                                  style: TextStyle(
+                                      fontSize: screenWidth * 0.033,
+                                      color: Colors.black26),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                  width: screenWidth * 0.32,
+                                  height: 1,
+                                  color: Colors.black26,
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                              width: 10,
-                              height: screenWidth * 0.1,
-                            ),
-                            Text(
-                              DateFormat('yyyy년MM월dd일')
-                                  .format(orderHistory[index].datetime),
-                              style: TextStyle(
-                                  fontSize: screenWidth * 0.033,
-                                  color: Colors.black26),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              width: screenWidth * 0.32,
-                              height: 1,
-                              color: Colors.black26,
-                            ),
+                            ListItemWidget(orderMap, index)
                           ],
-                        ),
-                        ListItemWidget(orderMap, index)
-                      ],
-                    );
-                  }
-                  return ListItemWidget(orderMap, index);
-                },
-              );
-            } else if (snapshot.hasError) {
-              return Center(child: Text('에러 발생: ${snapshot.error}'));
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-        ))
+                        );
+                      }
+                      return ListItemWidget(orderMap, index);
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('에러 발생: ${snapshot.error}'));
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ))
         : Container(
-      color: Colors.white,
-      alignment: Alignment.center,
-      child: Text(
-        '로딩중',
-        style: TextStyle(
-          fontSize: 100,
-        ),
-      ),
-    );
+            color: Colors.white,
+            alignment: Alignment.center,
+            child: Text(
+              '로딩중',
+              style: TextStyle(
+                fontSize: 100,
+              ),
+            ),
+          );
   }
 }

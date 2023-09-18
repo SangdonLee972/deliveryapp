@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dronapp/Model/Order.dart';
 import 'package:dronapp/Model/User.dart';
+import 'package:dronapp/deliverydetail.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -108,100 +109,116 @@ class _RecipientHistoryState extends State<RecipientHistory> {
   }
 
   Widget recipientWidget(OrderModel orderModel, double screenWidth) {
-    return Container(
-      width: screenWidth * 0.9,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(width: 1, color: Colors.black26)),
-      child: Column(
-        children: [
-          Container(
-            width: screenWidth * 0.9,
-            height: 5,
-            color: Colors.black,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.04, vertical: screenWidth * 0.05),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '[(주)나르마] 제주드론배송센터',
-                    style: TextStyle(
-                        fontSize: screenWidth * 0.036,
-                        color: Color.fromARGB(255, 33, 79, 243)),
-                  ),
-                  Text(DateFormat('yyyy-MM-dd').format(orderModel.datetime))
-                ],
+    return TextButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) =>
+                      DeliveryDetailPage(order: orderModel))));
+        },
+        style: const ButtonStyle(
+            padding: MaterialStatePropertyAll(EdgeInsets.zero),
+            overlayColor: MaterialStatePropertyAll(Color.fromARGB(10, 0, 0, 0)),
+            foregroundColor: MaterialStatePropertyAll(Colors.black)),
+        child: Container(
+          width: screenWidth * 0.9,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(width: 1, color: Colors.black26)),
+          child: Column(
+            children: [
+              Container(
+                width: screenWidth * 0.9,
+                height: 5,
+                color: Colors.black,
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              Text(
-                orderModel.id,
-                style: TextStyle(fontSize: screenWidth * 0.032),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.04,
+                    vertical: screenWidth * 0.05),
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        width: screenWidth * 0.58,
-                        child: Text(
-                          orderModel.obj.objName,
-                          maxLines: 1,
-                          style: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              fontSize: screenWidth * 0.044,
-                              color: const Color.fromARGB(255, 44, 23, 235),
-                              fontWeight: FontWeight.w600),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '[(주)나르마] 제주드론배송센터',
+                            style: TextStyle(
+                                fontSize: screenWidth * 0.036,
+                                color: Color.fromARGB(255, 33, 79, 243)),
+                          ),
+                          Text(DateFormat('yyyy-MM-dd')
+                              .format(orderModel.datetime))
+                        ],
                       ),
                       const SizedBox(
-                        height: 3,
+                        height: 8,
                       ),
                       Text(
-                        '예상 배송비 : ${f.format(0)}원',
-                        style: TextStyle(fontSize: screenWidth * 0.036),
+                        orderModel.id,
+                        style: TextStyle(fontSize: screenWidth * 0.032),
                       ),
                       const SizedBox(
-                        height: 3,
+                        height: 10,
                       ),
-                      Text(
-                        '최종 배송비 : ${f.format(0)}원',
-                        style: TextStyle(fontSize: screenWidth * 0.036),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: screenWidth * 0.58,
+                                child: Text(
+                                  orderModel.obj.objName,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: screenWidth * 0.044,
+                                      color: const Color.fromARGB(
+                                          255, 44, 23, 235),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              Text(
+                                '예상 배송비 : ${f.format(0)}원',
+                                style: TextStyle(fontSize: screenWidth * 0.036),
+                              ),
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              Text(
+                                '최종 배송비 : ${f.format(0)}원',
+                                style: TextStyle(fontSize: screenWidth * 0.036),
+                              )
+                            ],
+                          ),
+                          Container(
+                            width: screenWidth * 0.17,
+                            height: screenWidth * 0.18,
+                            color: Colors.blue,
+                            child: Center(
+                              child: Text(
+                                orderModel.status,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: screenWidth * 0.032,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          )
+                        ],
                       )
-                    ],
-                  ),
-                  Container(
-                    width: screenWidth * 0.17,
-                    height: screenWidth * 0.18,
-                    color: Colors.blue,
-                    child: Center(
-                      child: Text(
-                        orderModel.status,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: screenWidth * 0.032,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  )
-                ],
+                    ]),
               )
-            ]),
-          )
-        ],
-      ),
-    );
+            ],
+          ),
+        ));
   }
 }

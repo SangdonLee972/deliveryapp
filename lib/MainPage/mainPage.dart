@@ -1,3 +1,4 @@
+import 'package:dronapp/MainPage/profilePage.dart';
 import 'package:dronapp/MainPage/recipent_History.dart';
 import 'package:dronapp/Model/User.dart';
 import 'package:dronapp/sinchungsua/applicationPage.dart';
@@ -50,7 +51,10 @@ class MainPageState extends State<MainPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TextButton(
-            onPressed: () {},
+            onPressed: () async {
+              await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()));
+            },
             style: const ButtonStyle(
                 overlayColor: MaterialStatePropertyAll(Colors.transparent)),
             child: Row(
