@@ -21,8 +21,8 @@ const token = req.body.token;
 
   const payload = {
     notification: {
-      title: "드론 어플리케이션",
-      body: "상품이 인수되었습니다.",
+      title: "드론배송 어플리케이션",
+      body: "상품 배송이 시작되었습니다.",
     },
   };
 
@@ -42,8 +42,8 @@ const token = req.body.token;
 
   const payload = {
     notification: {
-      title: "드론 어플리케이션",
-      body: "주문이 체결되었습니다!",
+      title: "드론배송 어플리케이션",
+      body: "상품이 배송 완료되었습니다!",
     },
   };
 

@@ -1,3 +1,4 @@
+// cushopPage.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
@@ -42,10 +43,10 @@ class gmPageState extends State<gmPage> {
     );
   }
 
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,13 +111,12 @@ class gmPageState extends State<gmPage> {
             if (snapshot.hasData) {
               List<OrderModel> orderHistory = snapshot.data!;
 
+              if (orderHistory.isEmpty) {
+                return Center(child: Text('주문 내역이 없습니다.'));
+              }
 
-//                   if (orderHistory.isEmpty) {
-//                     return Center(child: Text('주문 내역이 없습니다.'));
-//                   }
-
-//                   DateTime? lastDate;
-//                   // '상품 인수'인 주문만 필터링하고 '상품 인수'인 주문이 있을 때 print를 실행합니다.
+              DateTime? lastDate;
+              // '상품 인수'인 주문만 필터링하고 '상품 인수'인 주문이 있을 때 print를 실행합니다.
 
               return ListView.builder(
                 itemCount: orderHistory.length,
