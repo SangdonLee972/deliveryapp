@@ -79,21 +79,6 @@ class OrderService {
     });
   }
 
-  Future<OrderModel?> getOrderById(String orderId) async {
-    try {
-      DocumentSnapshot orderSnapshot =
-          await ordersCollection.doc(orderId).get();
-      if (orderSnapshot.exists) {
-        return OrderModel.fromMap(orderSnapshot.data() as Map<String, dynamic>);
-      } else {
-        return null; // 주문이 존재하지 않는 경우 null 반환
-      }
-    } catch (e) {
-      print('Error getting order by ID: $e');
-      return null; // 에러 발생 시 null 반환
-    }
-  }
-
   Stream<List<OrderModel>> getAllOrdersStream() {
     return FirebaseFirestore.instance
         .collection('orders')
@@ -112,6 +97,21 @@ class OrderService {
       }
       return allOrders;
     });
+  }
+
+  Future<OrderModel?> getOrderById(String orderId) async {
+    try {
+      DocumentSnapshot orderSnapshot =
+          await ordersCollection.doc(orderId).get();
+      if (orderSnapshot.exists) {
+        return OrderModel.fromMap(orderSnapshot.data() as Map<String, dynamic>);
+      } else {
+        return null; // 주문이 존재하지 않는 경우 null 반환
+      }
+    } catch (e) {
+      print('Error getting order by ID: $e');
+      return null; // 에러 발생 시 null 반환
+    }
   }
 
 // 다른 필요한 메서드 추가

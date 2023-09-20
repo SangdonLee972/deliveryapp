@@ -1,3 +1,4 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:dronapp/MainPage/profilePage.dart';
 import 'package:dronapp/MainPage/recipent_History.dart';
 import 'package:dronapp/Model/User.dart';
@@ -18,18 +19,36 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
+    return
+      Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           topRayout(screenWidth),
+          SizedBox(height: 30,),
           Container(
-            width: screenWidth,
-            height: screenWidth * 0.6,
-            color: Colors.black12,
+            width: double.infinity,
+            height: 230.0,
+            child: Swiper(
+              itemBuilder: (BuildContext context, int index) {
+                final imagePath = 'images/${(index + 1).toString().padLeft(3, '0')}.png';
+
+                return Image.asset(
+                  imagePath,
+                  fit: BoxFit.fill,
+                );
+              },
+              itemCount: 3,
+              viewportFraction: 0.9,
+              scale: 0.9,
+                autoplay: true, // 자동 재생 활성화
+                autoplayDelay: 3000,
+            ),
           ),
+
+
           const SizedBox(
             height: 10,
           ),
@@ -152,6 +171,7 @@ class MainPageState extends State<MainPage> {
                           fontSize: screenWidth * 0.042,
                           fontWeight: FontWeight.w600),
                     ),
+
                   ))
                 ],
               ),

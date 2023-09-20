@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 
 
-const serviceAccount = require("./deliverydroneapp-89b9d-29741aa1cec4.json");
+const serviceAccount = require("./dronquick-84db1-firebase-adminsdk-kuxm0-2cfff28556.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -57,3 +57,4 @@ const token = req.body.token;
     console.log("Error sending message:", error);
   });
 });
+

@@ -1,3 +1,4 @@
+import 'package:dronapp/GMPage/gmPage.dart';
 import 'package:dronapp/LoginPage/login_function.dart';
 import 'package:dronapp/LoginPage/signup_page.dart';
 import 'package:flutter/material.dart';
@@ -68,12 +69,9 @@ class LoginPageState extends State<LoginPage> {
             if (UserInstance.instance.type == 'user') {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => const MainPage()));
-            } else if (UserInstance.instance.type == 'store') {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const MainPage()));
             } else if (UserInstance.instance.type == 'Manager') {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const MainPage()));
+                  MaterialPageRoute(builder: (context) => const gmPage()));
             }
           } else {
             if (status == -1) {
