@@ -5,7 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 class FCMNotificationService{
 
-  final pushFcmUrl = 'https://us-central1-deliverydroneapp-89b9d.cloudfunctions.net/pushFcm';
+  final pushFcmUrl = 'https://us-central1-dronquick-84db1.cloudfunctions.net/pushFcm';
 
   Future<void> pushAnswer(String token) async {
     try {
@@ -24,6 +24,7 @@ class FCMNotificationService{
   }
 
 
+  //배송완료
   Future<void> pushAnswersuccess(String token) async {
     try {
       final http.Response response = await http.post(

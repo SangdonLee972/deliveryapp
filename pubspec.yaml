@@ -45,6 +45,7 @@ dependencies:
   firebase_storage: ^11.2.6
   fluttertoast: ^8.2.2
   flutter_local_notifications: ^15.1.1
+  card_swiper: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -98,3 +99,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  assets:
+    - images/001.png
+    - images/002.png    - images/003.png
+
+

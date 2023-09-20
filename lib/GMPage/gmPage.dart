@@ -85,22 +85,6 @@ class gmPageState extends State<gmPage> {
                       ),
                     ]),
               ),
-              ListTile(
-                leading: Icon(Icons.person,
-                    color: Colors.grey[850]), // 좌측기준 스위프트에서 leading
-                onTap: () async {
-                  // await Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => const ProfilePage()));
-                  // setState(() {});
-
-                  setState(() {
-                    addmenu();
-                  });
-                },
-                title: Text('회원정보'),
-              ),
             ])),
             body: StreamBuilder<List<OrderModel>>(
               stream: orderService.getAllOrdersStream(), // 스트림을 얻는 메서드 활용

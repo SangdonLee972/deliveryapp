@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'FCM/noti.dart';
 import 'LoginPage/loginPage.dart';
 import 'LoginPage/login_function.dart';
 import 'Model/User.dart';
@@ -23,6 +24,7 @@ void main() async {
     }
   }
   // await FirebaseApi().fcmSetting();
+  await FirebaseApi().fcmSetting();
 
   runApp(const MyApp());
 }

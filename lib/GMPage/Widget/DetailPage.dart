@@ -1,6 +1,10 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dronapp/FCM/FCMNotificationService.dart';
+import 'package:dronapp/Model/User.dart';
+import 'package:dronapp/Service/UserService.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +29,14 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   String status = ''; // 주문 상태를 저장할 변수
 
+
   @override
   void initState() {
     super.initState();
     // 초기 상태를 설정하려면 initState에서 설정할 수 있습니다.
     status = widget.order['status'];
+
+
   }
 
   Future<void> _updateStatus(String newStatus) async {
@@ -180,8 +187,25 @@ class _DetailPageState extends State<DetailPage> {
                       title: '배송중',
                       onTap: () async {
                         await _updateStatus('배송중');
+                        UserService userService = UserService();
+                        FCMNotificationService fcm = FCMNotificationService();
+                        UserInstance? user = await userService.getUserFromID(widget.order['userId']);
 
-                        setState(() {
+                        setState(()  {
+
+
+                          try {
+
+                            if (user != null && user.fcmid != null) {
+                              fcm.pushAnswer(user.fcmid!); // null이 아닌 경우에만 전달
+                            }
+                          } catch (e) {
+                            // 오류 처리
+                            print('오류 발생: $e');
+                          }
+
+
+
                           widget.order['status'] = "배송중";
                         });
                         //  await _updateOrderStatus('상품 준비중');
@@ -191,9 +215,28 @@ class _DetailPageState extends State<DetailPage> {
                       title: '배송완료',
                       onTap: () async {
                         await _updateStatus('배송완료');
+                        UserService userService = UserService();
+                        FCMNotificationService fcm = FCMNotificationService();
+
+
+                        UserInstance? user = await userService.getUserFromID(widget.order['userId']);
+
+
                         setState(() {
-                          widget.order['status'] = "배송완료";
+
+
+                          try {
+
+                            if (user != null && user.fcmid != null) {
+                              fcm.pushAnswersuccess(user.fcmid!); // null이 아닌 경우에만 전달
+                            }
+                          } catch (e) {
+                            // 오류 처리
+                            print('오류 발생: $e');
+                          }
                         });
+                        widget.order['status'] = "배송완료";
+
                         // await _updateOrderStatus('복귀 준비 완료');
                       },
                     ),
