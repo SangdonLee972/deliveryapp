@@ -85,9 +85,14 @@ class _SignUpPageState extends State<SignUpPage> {
         focusBoard(4);
       } else if (controllers[5].text.isEmpty) {
         setState(() {
-          strings[5] = '비밀번호를 입력해주세요';
+          strings[5] = '비밀번호 재입력을 입력해주세요';
         });
         focusBoard(4);
+      } else if (!passwordValid(controllers[4].text)) {
+        setState(() {
+          strings[5] = '비밀번호는 숫자, 영문자, 특수문자 포함 7 - 20자로 입력해주세요.';
+        });
+        focusBoard(5);
       } else if (controllers[4].text != controllers[5].text) {
         setState(() {
           strings[5] = '비밀번호와 일치하지 않습니다';
@@ -151,6 +156,13 @@ class _SignUpPageState extends State<SignUpPage> {
         r'^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$';
     RegExp regex = RegExp(pattern);
     return regex.hasMatch(email);
+  }
+
+  bool passwordValid(String password) {
+    String pattern = r'^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{7,20}$';
+    RegExp regex = RegExp(pattern);
+    print(regex.hasMatch(password));
+    return regex.hasMatch(password);
   }
 
   @override

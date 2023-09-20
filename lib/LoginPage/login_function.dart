@@ -48,36 +48,33 @@ class EmailLogin {
         password: password,
       );
       String? fcmToken = await FirebaseMessaging.instance.getToken();
-      var doc = await userCollection.doc(FirebaseAuth.instance.currentUser!.uid).get();
+      var doc = await userCollection
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
       if (doc.exists) {
-        await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({
           'fcmid': fcmToken,
         });
 
         UserInstance.instance =
             UserInstance.fromMap(doc.data() as Map<String, dynamic>);
-
-
-
-      print('로그인성공');
-
         return 1;
       } else {
         print("뷁");
         return -1;
       }
     } on FirebaseAuthException catch (e) {
-      print(e.code);
       if (e.code == 'user-not-found') {
         print("유저없음");
-
         return -2;
       } else if (e.code == 'wrong-password') {
         print("비번틀림");
         return -1;
       } else if (e.code == 'invalid-email') {
         print("이메일틀림");
-
         return -3;
       }
       return -2;

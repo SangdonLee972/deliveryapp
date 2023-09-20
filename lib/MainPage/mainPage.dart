@@ -1,6 +1,7 @@
 import 'package:dronapp/MainPage/profilePage.dart';
 import 'package:dronapp/MainPage/recipent_History.dart';
 import 'package:dronapp/Model/User.dart';
+import 'package:dronapp/alert_error.dart';
 import 'package:dronapp/sinchungsua/applicationPage.dart';
 import 'package:flutter/material.dart';
 
@@ -121,7 +122,11 @@ class MainPageState extends State<MainPage> {
               Container(
                 width: double.maxFinite,
                 height: screenWidth * 0.5,
-                color: Colors.green,
+                color: Color.fromARGB(255, 144, 226, 147),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                child: Center(
+                  child: Image.asset('asset/image/box.png'),
+                ),
               ),
               SizedBox(
                 height: screenWidth * 0.03,
@@ -154,78 +159,97 @@ class MainPageState extends State<MainPage> {
           ),
         )),
         Expanded(
-            child: Column(
-          children: [
-            Container(
-              width: double.maxFinite,
-              height: screenWidth * 0.5,
-              color: const Color.fromARGB(255, 238, 87, 76),
-            ),
-            SizedBox(
-              height: screenWidth * 0.03,
-            ),
-            Row(
-              children: [
-                Container(
-                  width: screenWidth * 0.03,
-                  height: screenWidth * 0.25,
-                  color: const Color.fromARGB(255, 238, 87, 76),
-                ),
-                Expanded(
-                    child: Container(
-                  height: screenWidth * 0.25,
-                  color: Colors.black12,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.02,
-                      vertical: screenWidth * 0.02),
-                  child: Text(
-                    '슈퍼,마트배송',
-                    style: TextStyle(
-                        color: const Color.fromARGB(255, 238, 87, 76),
-                        fontSize: screenWidth * 0.042,
-                        fontWeight: FontWeight.w600),
+            child: TextButton(
+          onPressed: () {
+            OverlaySetting().showErrorAlert(context, '준비중입니다');
+          },
+          style: const ButtonStyle(
+              overlayColor: MaterialStatePropertyAll(Colors.black12),
+              padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+          child: Column(
+            children: [
+              Container(
+                  width: double.maxFinite,
+                  height: screenWidth * 0.5,
+                  color: Color.fromARGB(255, 234, 117, 109),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+                  child: Image.asset('asset/image/mart.png')),
+              SizedBox(
+                height: screenWidth * 0.03,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: screenWidth * 0.03,
+                    height: screenWidth * 0.25,
+                    color: const Color.fromARGB(255, 238, 87, 76),
                   ),
-                ))
-              ],
-            ),
-          ],
+                  Expanded(
+                      child: Container(
+                    height: screenWidth * 0.25,
+                    color: Colors.black12,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.02,
+                        vertical: screenWidth * 0.02),
+                    child: Text(
+                      '슈퍼,마트배송',
+                      style: TextStyle(
+                          color: const Color.fromARGB(255, 238, 87, 76),
+                          fontSize: screenWidth * 0.042,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ))
+                ],
+              ),
+            ],
+          ),
         )),
         Expanded(
-            child: Column(
-          children: [
-            Container(
-              width: double.maxFinite,
-              height: screenWidth * 0.5,
-              color: Color.fromARGB(255, 230, 230, 117),
-            ),
-            SizedBox(
-              height: screenWidth * 0.03,
-            ),
-            Row(
-              children: [
-                Container(
-                  width: screenWidth * 0.03,
-                  height: screenWidth * 0.25,
-                  color: Colors.blue,
-                ),
-                Expanded(
-                    child: Container(
-                  height: screenWidth * 0.25,
-                  color: Colors.black12,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.02,
-                      vertical: screenWidth * 0.02),
-                  child: Text(
-                    '역배송',
-                    style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: screenWidth * 0.042,
-                        fontWeight: FontWeight.w600),
+            child: TextButton(
+          onPressed: () {
+            OverlaySetting().showErrorAlert(context, '준비중입니다');
+          },
+          style: ButtonStyle(
+              padding: MaterialStatePropertyAll(EdgeInsets.zero),
+              overlayColor: MaterialStatePropertyAll(Colors.black12)),
+          child: Column(
+            children: [
+              Container(
+                width: double.maxFinite,
+                height: screenWidth * 0.5,
+                color: Color.fromARGB(255, 236, 236, 145),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                child: Center(child: Image.asset('asset/image/back.png')),
+              ),
+              SizedBox(
+                height: screenWidth * 0.03,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: screenWidth * 0.03,
+                    height: screenWidth * 0.25,
+                    color: Colors.blue,
                   ),
-                ))
-              ],
-            ),
-          ],
+                  Expanded(
+                      child: Container(
+                    height: screenWidth * 0.25,
+                    color: Colors.black12,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.02,
+                        vertical: screenWidth * 0.02),
+                    child: Text(
+                      '역배송',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: screenWidth * 0.042,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ))
+                ],
+              ),
+            ],
+          ),
         ))
       ],
     );

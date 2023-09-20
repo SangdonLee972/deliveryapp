@@ -81,7 +81,7 @@ class LoginPageState extends State<LoginPage> {
               setting.showErrorAlert(context, '비밀번호가 일치하지 않습니다.');
             } else {
               OverlaySetting setting = OverlaySetting();
-              setting.showErrorAlert(context, '이메일이 존재하지 않습니다.');
+              setting.showErrorAlert(context, '이메일 또는 비밀번호가 틀렸습니다.');
             }
           }
         } else {
