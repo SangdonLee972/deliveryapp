@@ -19,7 +19,10 @@ class _RecipientHistoryState extends State<RecipientHistory> {
     return FirebaseFirestore.instance
         .collection('orders')
         .orderBy('datetime', descending: true)
-        .where('id', whereIn: UserInstance.instance.orders)
+        .where('id',
+            whereIn: UserInstance.instance.orders.isEmpty
+                ? ['1']
+                : UserInstance.instance.orders)
         .snapshots()
         .map((querySnapshot) {
       if (querySnapshot.docs.isEmpty) {
