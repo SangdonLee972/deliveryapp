@@ -1,6 +1,9 @@
 
+import 'package:dronapp/LoginPage/login_function.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../LoginPage/loginPage.dart';
 import '../Model/Order.dart';
 import '../Model/User.dart';
 import '../Service/OrderService.dart';
@@ -84,6 +87,24 @@ class gmPageState extends State<gmPage> {
                         height: screenWidth * 0.01,
                       ),
                     ]),
+              ),
+              ListTile(
+                leading: Icon(Icons.person,
+                    color: Colors.grey[850]), // 좌측기준 스위프트에서 leading
+                onTap: () async {
+                  // await Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const ProfilePage()));
+                  // setState(() {});
+
+                    FirebaseAuth.instance.signOut();
+                    Navigator.popUntil(context, (route) => false);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                     setState(() {});
+                },
+                title: Text('로그아웃'),
               ),
             ])),
             body: StreamBuilder<List<OrderModel>>(

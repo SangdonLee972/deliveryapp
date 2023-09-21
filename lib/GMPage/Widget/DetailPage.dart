@@ -55,9 +55,10 @@ class _DetailPageState extends State<DetailPage> {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
+      final fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
+
       final File file = File(pickedFile.path); // Convert the path to a File
-      final fileName =
-          'your_custom_image_name.jpg'; // Set your desired image file name
+
       final storageReference =
           FirebaseStorage.instance.ref().child('images/$fileName');
       await storageReference.putFile(file);
