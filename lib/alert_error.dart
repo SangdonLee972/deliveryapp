@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class OverlaySetting {
   void showErrorAlert(BuildContext context, String message) async {
     OverlayEntry overlay =
-    OverlayEntry(builder: (_) => AlertEmailError(message));
+        OverlayEntry(builder: (_) => AlertEmailError(message));
 
     Navigator.of(context).overlay!.insert(overlay);
 
@@ -59,12 +59,13 @@ class AlertEmailErrorWidget extends State<AlertEmailError>
               child: Container(
                 margin: const EdgeInsets.all(0),
                 padding:
-                const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.grey),
                 child: Text(
                   widget.errMessage,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.white),
                 ),
               ),

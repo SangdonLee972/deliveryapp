@@ -43,7 +43,7 @@ class LoginPageState extends State<LoginPage> {
 
       if (emailController.text.isEmpty) {
         setState(() {
-          emailError = '이메일을 입력해주세요';
+          emailError = '전화번호을 입력해주세요';
         });
         FocusScope.of(context).requestFocus(emailFocus);
       } else {
@@ -79,7 +79,7 @@ class LoginPageState extends State<LoginPage> {
               setting.showErrorAlert(context, '비밀번호가 일치하지 않습니다.');
             } else {
               OverlaySetting setting = OverlaySetting();
-              setting.showErrorAlert(context, '이메일 또는 비밀번호가 틀렸습니다.');
+              setting.showErrorAlert(context, '전화번호 또는 비밀번호가 틀렸습니다.');
             }
           }
         } else {
@@ -151,7 +151,7 @@ class LoginPageState extends State<LoginPage> {
                   FocusScope.of(context).requestFocus(pwFocus);
                 },
                 decoration: InputDecoration(
-                    hintText: '이메일을 입력하세요',
+                    hintText: '전화번호을 입력하세요',
                     errorText: emailError,
                     border: OutlineInputBorder(),
                     focusedBorder: OutlineInputBorder()),
@@ -185,7 +185,6 @@ class LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     login();
                     FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
-
                   },
                   style: const ButtonStyle(
                       overlayColor:

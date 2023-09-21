@@ -73,6 +73,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
     recipientController.dispose();
     recipientPhoneController.dispose();
     recipientAddressController.dispose();
+
+
     for (int i = 0; i < 10; i++) {
       focusnodes[i].dispose();
     }
@@ -269,6 +271,11 @@ class _ApplicationPageState extends State<ApplicationPage> {
 
   @override
   Widget build(BuildContext context) {
+    if(UserInstance.instance.address != null)
+      {
+        recipientAddressController.text = UserInstance.instance.address!;
+
+      }
     double screenWidth = MediaQuery.of(context).size.width;
     if (isMore) {
       agreeHeight = null;
@@ -1027,20 +1034,20 @@ class _ApplicationPageState extends State<ApplicationPage> {
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: screenWidth * 0.02),
-                              child: TextFormField(
-                                controller: recipientAddressController,
-                                focusNode: focusnodes[9],
-                                cursorColor: Colors.black,
-                                decoration: InputDecoration(
+                                // TextFormField 위젯
+                                child:TextFormField(
+                                  controller: recipientAddressController,
+                                  focusNode: focusnodes[9],
+                                  cursorColor: Colors.black,
+                                  decoration: InputDecoration(
                                     hintText: '상세주소',
-                                    contentPadding: EdgeInsets.symmetric(
-                                        horizontal: screenWidth * 0.02),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                                     focusedBorder: OutlineInputBorder(),
                                     enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                                Color.fromARGB(30, 0, 0, 0)))),
-                              ),
+                                      borderSide: BorderSide(color: Color.fromARGB(30, 0, 0, 0)),
+                                    ),
+                                  ),
+                                ),
                             )),
                       ],
                     )
