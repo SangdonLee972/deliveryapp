@@ -8,7 +8,7 @@
 
 
     <application
-        android:label="dronapp"
+        android:label="드론옵서"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

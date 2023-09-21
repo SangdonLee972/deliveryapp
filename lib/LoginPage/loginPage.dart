@@ -184,6 +184,8 @@ class LoginPageState extends State<LoginPage> {
               child: TextButton(
                   onPressed: () {
                     login();
+                    FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
+
                   },
                   style: const ButtonStyle(
                       overlayColor:
@@ -231,6 +233,8 @@ class LoginPageState extends State<LoginPage> {
             ),
             TextButton(
                 onPressed: () {
+                  FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(

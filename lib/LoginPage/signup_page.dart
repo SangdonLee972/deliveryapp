@@ -90,7 +90,7 @@ class _SignUpPageState extends State<SignUpPage> {
         focusBoard(4);
       } else if (!passwordValid(controllers[4].text)) {
         setState(() {
-          strings[5] = '비밀번호는 숫자, 영문자, 특수문자 포함 7 - 20자로 입력해주세요.';
+          strings[5] = '비밀번호는 숫자, 영문자, 특수문자 포함 \n7 - 20자로 입력해주세요.';
         });
         focusBoard(5);
       } else if (controllers[4].text != controllers[5].text) {
@@ -122,7 +122,7 @@ class _SignUpPageState extends State<SignUpPage> {
         } else {
           String token = await FirebaseMessaging.instance.getToken() as String;
 
-          bool trySingup = await emailLogin.singup(
+          int trySingup = await emailLogin.signup(
             address: controllers[1].text,
             phoneNumber: controllers[2].text,
             email: controllers[3].text,
@@ -132,14 +132,29 @@ class _SignUpPageState extends State<SignUpPage> {
           );
 
           Navigator.pop(context);
-          if (trySingup) {
+          if (trySingup == 200) {
             Navigator.pop(context);
             OverlaySetting setting = OverlaySetting();
             setting.showErrorAlert(context, '회원가입이 되었습니다.');
-          } else {
+          } else if(trySingup==401){
             OverlaySetting setting = OverlaySetting();
             setting.showErrorAlert(
-                context, '회원가입 도중 오류가 발생했습니다\n            다시 시도해주세요');
+                context, '비밀번호가 너무 약합니다.\n            다시 시도해주세요');
+          }else if(trySingup==402){
+            OverlaySetting setting = OverlaySetting();
+            setting.showErrorAlert(
+                context, '이미 존재하는 이메일입니다.\n            다시 시도해주세요');
+
+          }
+          else if(trySingup==403){
+            OverlaySetting setting = OverlaySetting();
+            setting.showErrorAlert(
+                context, '회원가입에 실패하였습니다.\n            다시 시도해주세요');
+          }
+          else if(trySingup==405){
+            OverlaySetting setting = OverlaySetting();
+            setting.showErrorAlert(
+                context, '회원가입도중 문제가 발생했습니다..\n            다시 시도해주세요');
           }
         }
       }
@@ -268,6 +283,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       TextButton(
                           onPressed: () {
                             signUp();
+                            FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
+
                           },
                           style: const ButtonStyle(
                               overlayColor:
