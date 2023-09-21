@@ -13,11 +13,11 @@ class EmailLogin {
 
   Future<int> signup(
       {required String email,
-        required String password,
-        required String name,
-        required String address,
-        required String fcmid,
-        required String phoneNumber}) async {
+      required String password,
+      required String name,
+      required String address,
+      required String fcmid,
+      required String phoneNumber}) async {
     try {
       final userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
@@ -33,7 +33,6 @@ class EmailLogin {
         'fcmid': fcmid,
         'phoneNumber': phoneNumber
       });
-
 
       // 나머지 사용자 정보 설정 및 저장 작업 추가
 
@@ -63,7 +62,7 @@ class EmailLogin {
     try {
       final userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: 'email@qqqqq.com',
+        email: '$email@qqqqq.com',
         password: password,
       );
       String? fcmToken = await FirebaseMessaging.instance.getToken();

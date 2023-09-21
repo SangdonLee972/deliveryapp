@@ -19,13 +19,11 @@ class _SignUpPageState extends State<SignUpPage> {
     TextEditingController(),
     TextEditingController(),
     TextEditingController(),
-    TextEditingController(),
     TextEditingController()
   ];
 
-  List<String> titles = ['이름', '주소', '연락처', '이메일', '비밀번호', '비밀번호 재입력'];
+  List<String> titles = ['이름', '주소', '연락처', '비밀번호', '비밀번호 재입력'];
   List<FocusNode> focusList = [
-    FocusNode(),
     FocusNode(),
     FocusNode(),
     FocusNode(),
@@ -37,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void dispose() {
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 5; i++) {
       controllers[i].dispose();
       focusList[i].dispose();
     }
@@ -70,34 +68,24 @@ class _SignUpPageState extends State<SignUpPage> {
         focusBoard(2);
       } else if (controllers[3].text.isEmpty) {
         setState(() {
-          strings[3] = '이메일을 입력해주세요';
-        });
-        focusBoard(3);
-      } else if (!emailVaild(controllers[3].text)) {
-        setState(() {
-          strings[3] = '이메일 형식이 올바르지 않습니다';
+          strings[3] = '비밀번호를 입력해주세요';
         });
         focusBoard(3);
       } else if (controllers[4].text.isEmpty) {
         setState(() {
-          strings[4] = '비밀번호를 입력해주세요';
+          strings[4] = '비밀번호 재입력을 입력해주세요';
+        });
+        focusBoard(3);
+      } else if (!passwordValid(controllers[3].text)) {
+        setState(() {
+          strings[3] = '비밀번호는 숫자, 영문자, 특수문자 포함 \n7 - 20자로 입력해주세요.';
+        });
+        focusBoard(3);
+      } else if (controllers[3].text != controllers[4].text) {
+        setState(() {
+          strings[4] = '비밀번호와 일치하지 않습니다';
         });
         focusBoard(4);
-      } else if (controllers[5].text.isEmpty) {
-        setState(() {
-          strings[5] = '비밀번호 재입력을 입력해주세요';
-        });
-        focusBoard(4);
-      } else if (!passwordValid(controllers[4].text)) {
-        setState(() {
-          strings[5] = '비밀번호는 숫자, 영문자, 특수문자 포함 \n7 - 20자로 입력해주세요.';
-        });
-        focusBoard(5);
-      } else if (controllers[4].text != controllers[5].text) {
-        setState(() {
-          strings[5] = '비밀번호와 일치하지 않습니다';
-        });
-        focusBoard(5);
       } else {
         EmailLogin emailLogin = EmailLogin();
         if (context.mounted) {
@@ -111,51 +99,35 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ));
         }
-        int trylogin = await emailLogin.login(
-            email: controllers[0].text, password: '12313131421312314213132');
-        if (trylogin == -1) {
+
+        String token = await FirebaseMessaging.instance.getToken() as String;
+
+        int trySingup = await emailLogin.signup(
+          address: controllers[1].text,
+          phoneNumber: controllers[2].text,
+          email: controllers[3].text,
+          password: controllers[4].text,
+          name: controllers[0].text,
+          fcmid: token,
+        );
+
+        Navigator.pop(context);
+        if (trySingup == 200) {
           Navigator.pop(context);
-          setState(() {
-            strings[0] = '이미 가입되어 있는 이메일 입니다.';
-          });
-          focusBoard(1);
-        } else {
-          String token = await FirebaseMessaging.instance.getToken() as String;
-
-          int trySingup = await emailLogin.signup(
-            address: controllers[1].text,
-            phoneNumber: controllers[2].text,
-            email: controllers[3].text,
-            password: controllers[4].text,
-            name: controllers[0].text,
-            fcmid: token,
-          );
-
-          Navigator.pop(context);
-          if (trySingup == 200) {
-            Navigator.pop(context);
-            OverlaySetting setting = OverlaySetting();
-            setting.showErrorAlert(context, '회원가입이 되었습니다.');
-          } else if(trySingup==401){
-            OverlaySetting setting = OverlaySetting();
-            setting.showErrorAlert(
-                context, '비밀번호가 너무 약합니다.\n            다시 시도해주세요');
-          }else if(trySingup==402){
-            OverlaySetting setting = OverlaySetting();
-            setting.showErrorAlert(
-                context, '이미 존재하는 이메일입니다.\n            다시 시도해주세요');
-
-          }
-          else if(trySingup==403){
-            OverlaySetting setting = OverlaySetting();
-            setting.showErrorAlert(
-                context, '회원가입에 실패하였습니다.\n            다시 시도해주세요');
-          }
-          else if(trySingup==405){
-            OverlaySetting setting = OverlaySetting();
-            setting.showErrorAlert(
-                context, '회원가입도중 문제가 발생했습니다..\n            다시 시도해주세요');
-          }
+          OverlaySetting setting = OverlaySetting();
+          setting.showErrorAlert(context, '회원가입이 되었습니다.');
+        } else if (trySingup == 401) {
+          OverlaySetting setting = OverlaySetting();
+          setting.showErrorAlert(context, '비밀번호가 너무 약합니다.\n다시 시도해주세요');
+        } else if (trySingup == 402) {
+          OverlaySetting setting = OverlaySetting();
+          setting.showErrorAlert(context, '이미 존재하는 전화번호입니다.\n다시 시도해주세요');
+        } else if (trySingup == 403) {
+          OverlaySetting setting = OverlaySetting();
+          setting.showErrorAlert(context, '회원가입에 실패하였습니다.\n다시 시도해주세요');
+        } else if (trySingup == 405) {
+          OverlaySetting setting = OverlaySetting();
+          setting.showErrorAlert(context, '회원가입도중 문제가 발생했습니다..\n다시 시도해주세요');
         }
       }
       isClick = false;
@@ -245,7 +217,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       SizedBox(
                         height: screenWidth * 0.07,
                       ),
-                      for (int i = 0; i < 5; i++)
+                      for (int i = 0; i < 4; i++)
                         SizedBox(
                           height: screenWidth * 0.18,
                           child: MyTextFormField(i, screenWidth),
@@ -256,16 +228,16 @@ class _SignUpPageState extends State<SignUpPage> {
                           SizedBox(
                             width: screenWidth * 0.7,
                             child: TextFormField(
-                              controller: controllers[5],
+                              controller: controllers[4],
                               cursorColor: Colors.black,
-                              focusNode: focusList[5],
+                              focusNode: focusList[4],
                               onFieldSubmitted: (value) {
                                 FocusManager.instance.primaryFocus?.unfocus();
                                 signUp();
                               },
                               decoration: InputDecoration(
-                                  hintText: '${titles[5]}',
-                                  errorText: strings[5],
+                                  hintText: '${titles[4]}',
+                                  errorText: strings[4],
                                   contentPadding: EdgeInsets.symmetric(
                                     horizontal: screenWidth * 0.05,
                                   ),
@@ -283,8 +255,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       TextButton(
                           onPressed: () {
                             signUp();
-                            FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
-
+                            FocusManager.instance.primaryFocus
+                                ?.unfocus(); // 키보드 닫기 이벤트
                           },
                           style: const ButtonStyle(
                               overlayColor:
