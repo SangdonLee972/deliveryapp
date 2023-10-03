@@ -1,4 +1,3 @@
-
 class UserInstance {
   String? name;
   String? fcmid;
@@ -10,12 +9,12 @@ class UserInstance {
 
   UserInstance(
       {this.name,
-        this.fcmid,
-        this.id,
-        this.type,
-        required this.orders,
-        this.phoneNumber,
-        this.address});
+      this.fcmid,
+      this.id,
+      this.type,
+      required this.orders,
+      this.phoneNumber,
+      this.address});
 
   static UserInstance instance = UserInstance(orders: []);
 

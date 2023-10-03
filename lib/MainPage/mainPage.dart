@@ -1,9 +1,11 @@
 import 'package:card_swiper/card_swiper.dart';
+import 'package:dronapp/LoginPage/loginPage.dart';
 import 'package:dronapp/MainPage/profilePage.dart';
 import 'package:dronapp/MainPage/recipent_History.dart';
 import 'package:dronapp/Model/User.dart';
 import 'package:dronapp/alert_error.dart';
-import 'package:dronapp/sinchungsua/applicationPage.dart';
+import 'package:dronapp/sinchungsua/notification.dart';
+import 'package:dronapp/sinchungsua/reverseNotification.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -19,21 +21,23 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return
-      Scaffold(
+    return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           topRayout(screenWidth),
-          SizedBox(height: 30,),
-          Container(
+          const SizedBox(
+            height: 30,
+          ),
+          SizedBox(
             width: double.infinity,
             height: 230.0,
             child: Swiper(
               itemBuilder: (BuildContext context, int index) {
-                final imagePath = 'images/${(index + 1).toString().padLeft(3, '0')}.png';
+                final imagePath =
+                    'images/${(index + 1).toString().padLeft(3, '0')}.png';
 
                 return Image.asset(
                   imagePath,
@@ -43,12 +47,10 @@ class MainPageState extends State<MainPage> {
               itemCount: 3,
               viewportFraction: 0.9,
               scale: 0.9,
-                autoplay: true, // 자동 재생 활성화
-                autoplayDelay: 3000,
+              autoplay: true, // 자동 재생 활성화
+              autoplayDelay: 3000,
             ),
           ),
-
-
           const SizedBox(
             height: 10,
           ),
@@ -60,7 +62,7 @@ class MainPageState extends State<MainPage> {
           const SizedBox(
             height: 10,
           ),
-          MidButton(screenWidth),
+          midButton(screenWidth),
         ],
       )),
     ));
@@ -72,15 +74,24 @@ class MainPageState extends State<MainPage> {
       children: [
         TextButton(
             onPressed: () async {
-              await Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()));
+              if (UserInstance.instance.name != null) {
+                await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProfilePage()));
+              } else {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
+              }
             },
             style: const ButtonStyle(
                 overlayColor: MaterialStatePropertyAll(Colors.transparent)),
             child: Row(
               children: [
                 Text(
-                  '     ${UserInstance.instance.name!}님 ',
+                  UserInstance.instance.name != null
+                      ? '   ${UserInstance.instance.name!}님 '
+                      : '   로그인하기',
                   style: TextStyle(
                       fontSize: screenWidth * 0.045, color: Colors.black54),
                 ),
@@ -121,7 +132,7 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  Widget MidButton(double screenWidth) {
+  Widget midButton(double screenWidth) {
     return Row(
       children: [
         Expanded(
@@ -130,7 +141,7 @@ class MainPageState extends State<MainPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const ApplicationPage()));
+                    builder: (context) => const AppliCationNotificationPage()));
           },
           style: const ButtonStyle(
               overlayColor: MaterialStatePropertyAll(Colors.black12),
@@ -141,7 +152,7 @@ class MainPageState extends State<MainPage> {
               Container(
                 width: double.maxFinite,
                 height: screenWidth * 0.5,
-                color: Color.fromARGB(255, 144, 226, 147),
+                color: const Color.fromARGB(255, 144, 226, 147),
                 padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                 child: Center(
                   child: Image.asset('asset/image/box.png'),
@@ -171,7 +182,6 @@ class MainPageState extends State<MainPage> {
                           fontSize: screenWidth * 0.042,
                           fontWeight: FontWeight.w600),
                     ),
-
                   ))
                 ],
               ),
@@ -191,7 +201,7 @@ class MainPageState extends State<MainPage> {
               Container(
                   width: double.maxFinite,
                   height: screenWidth * 0.5,
-                  color: Color.fromARGB(255, 234, 117, 109),
+                  color: const Color.fromARGB(255, 234, 117, 109),
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                   child: Image.asset('asset/image/mart.png')),
               SizedBox(
@@ -227,9 +237,12 @@ class MainPageState extends State<MainPage> {
         Expanded(
             child: TextButton(
           onPressed: () {
-            OverlaySetting().showErrorAlert(context, '준비중입니다');
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ReverseNotificationPage()));
           },
-          style: ButtonStyle(
+          style: const ButtonStyle(
               padding: MaterialStatePropertyAll(EdgeInsets.zero),
               overlayColor: MaterialStatePropertyAll(Colors.black12)),
           child: Column(
@@ -237,7 +250,7 @@ class MainPageState extends State<MainPage> {
               Container(
                 width: double.maxFinite,
                 height: screenWidth * 0.5,
-                color: Color.fromARGB(255, 236, 236, 145),
+                color: const Color.fromARGB(255, 236, 236, 145),
                 padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                 child: Center(child: Image.asset('asset/image/back.png')),
               ),

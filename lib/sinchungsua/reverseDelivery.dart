@@ -9,35 +9,20 @@ import 'package:flutter/material.dart';
 import 'package:remedi_kopo/remedi_kopo.dart';
 import 'package:uuid/uuid.dart';
 
-class ApplicationPage extends StatefulWidget {
-  const ApplicationPage({super.key});
+class ReverseApplicationPage extends StatefulWidget {
+  const ReverseApplicationPage({super.key});
 
   @override
-  State<ApplicationPage> createState() => _ApplicationPageState();
+  State<ReverseApplicationPage> createState() => _ReverseApplicationPageState();
 }
 
-class _ApplicationPageState extends State<ApplicationPage> {
-  TextEditingController urlController = TextEditingController();
+class _ReverseApplicationPageState extends State<ReverseApplicationPage> {
   TextEditingController productNameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
-  // TextEditingController weightController = TextEditingController();
-  // TextEditingController widthController = TextEditingController();
-  // TextEditingController heightController = TextEditingController();
-  // TextEditingController lengthController = TextEditingController();
-  TextEditingController recipientController = TextEditingController();
-  TextEditingController recipientPhoneController = TextEditingController();
-  TextEditingController recipientAddressController = TextEditingController();
+
   List<FocusNode> focusnodes = [
     FocusNode(),
     FocusNode(),
-    FocusNode(),
-    FocusNode(),
-    FocusNode(),
-    FocusNode(),
-    FocusNode(),
-    FocusNode(),
-    FocusNode(),
-    FocusNode()
   ];
 
   bool standardMore = false;
@@ -63,17 +48,10 @@ class _ApplicationPageState extends State<ApplicationPage> {
   int quantity = 1;
 
   void dispose() {
-    urlController.dispose();
     productNameController.dispose();
     priceController.dispose();
-    // weightController.dispose();
-    // widthController.dispose();
-    // heightController.dispose();
-    // lengthController.dispose();
-    recipientController.dispose();
-    recipientPhoneController.dispose();
-    recipientAddressController.dispose();
-    for (int i = 0; i < 10; i++) {
+
+    for (int i = 0; i < 2; i++) {
       focusnodes[i].dispose();
     }
 
@@ -84,10 +62,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
 
   bool checkCanApply() {
     OverlaySetting setting = OverlaySetting();
-    if (urlController.text.isEmpty) {
-      setting.showErrorAlert(context, 'url을 입력해주세요');
-      return false;
-    }
+
     if (productNameController.text.isEmpty) {
       setting.showErrorAlert(context, '상품명을 입력해주세요');
       return false;
@@ -101,22 +76,6 @@ class _ApplicationPageState extends State<ApplicationPage> {
       return false;
     }
 
-    if (recipientController.text.isEmpty) {
-      setting.showErrorAlert(context, '수령자명을 입력해주세요');
-      return false;
-    }
-    if (recipientPhoneController.text.isEmpty) {
-      setting.showErrorAlert(context, '수령인 번호를 입력해주세요');
-      return false;
-    }
-    if (recipientAddress == null) {
-      setting.showErrorAlert(context, '주소를 입력해주세요');
-      return false;
-    }
-    if (recipientAddressController.text.isEmpty) {
-      setting.showErrorAlert(context, '상세주소를 입력해주세요');
-      return false;
-    }
     if (!isAgree2) {
       setting.showErrorAlert(context, '동의사항에 동의를 해주세요');
       return false;
@@ -138,16 +97,14 @@ class _ApplicationPageState extends State<ApplicationPage> {
             ));
     String id = Uuid().v4();
     OBJ obj = OBJ(
-        objUrl: urlController.text,
+        objUrl: "",
         objName: productNameController.text,
         objPrice: double.parse(priceController.text),
         objCount: quantity,
         objSize: standard,
         objMass: 0.0);
     DeliveryInformation deliveryInfo = DeliveryInformation(
-        name: recipientController.text,
-        phoneNumber: recipientPhoneController.text,
-        address: '$recipientAddress ${recipientAddressController.text}');
+        name: '제주드론배송센터', phoneNumber: '', address: '제주드론배송센터(상모리)');
     OrderModel orderModel = OrderModel(
         id: id,
         status: '',
@@ -305,52 +262,6 @@ class _ApplicationPageState extends State<ApplicationPage> {
                   children: [
                     Container(
                       width: screenWidth * 0.23,
-                      height: screenWidth * 0.16,
-                      decoration: BoxDecoration(
-                          color: leftColor,
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10))),
-                      child: Center(
-                          child: Text(
-                        '쇼핑몰 URL',
-                        style: TextStyle(
-                            fontSize: screenWidth * 0.032,
-                            fontWeight: FontWeight.w600),
-                      )),
-                    ),
-                    Expanded(
-                        child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: screenWidth * 0.02,
-                      ),
-                      child: SizedBox(
-                        height: screenWidth * 0.11,
-                        child: TextFormField(
-                          onFieldSubmitted: (v) => changeStandard(screenWidth),
-                          controller: urlController,
-                          focusNode: focusnodes[0],
-                          cursorColor: Colors.black,
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.02),
-                              focusedBorder: const OutlineInputBorder(),
-                              enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Color.fromARGB(30, 0, 0, 0)))),
-                        ),
-                      ),
-                    ))
-                  ],
-                ),
-                Container(
-                  width: screenWidth * 0.88,
-                  height: 1,
-                  color: Colors.black26,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      width: screenWidth * 0.23,
                       height: screenWidth * 0.15,
                       color: leftColor,
                       child: Center(
@@ -433,8 +344,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
                               height: screenWidth * 0.11,
                               child: TextFormField(
                                 controller: productNameController,
-                                onFieldSubmitted: (v) => focusBoard(2),
-                                focusNode: focusnodes[1],
+                                onFieldSubmitted: (v) => focusBoard(1),
+                                focusNode: focusnodes[0],
                                 cursorColor: Colors.black,
                                 decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(
@@ -473,7 +384,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
                           EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                       child: TextFormField(
                           controller: priceController,
-                          focusNode: focusnodes[2],
+                          focusNode: focusnodes[1],
                           keyboardType: TextInputType.number,
                           cursorColor: Colors.black,
                           decoration: InputDecoration(
@@ -583,6 +494,11 @@ class _ApplicationPageState extends State<ApplicationPage> {
                     )
                   ],
                 ),
+                Container(
+                  width: screenWidth * 0.88,
+                  height: 1,
+                  color: Colors.black26,
+                ),
               ]),
             ),
             SizedBox(
@@ -646,202 +562,14 @@ class _ApplicationPageState extends State<ApplicationPage> {
               width: screenWidth * 0.88,
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.black26, width: 1),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Column(children: [
-                Row(
-                  children: [
-                    Container(
-                      width: screenWidth * 0.23,
-                      height: screenWidth * 0.16,
-                      decoration: BoxDecoration(
-                          color: leftColor,
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10))),
-                      child: Center(
-                          child: Text(
-                        '수령자명',
-                        style: TextStyle(
-                            fontSize: screenWidth * 0.032,
-                            fontWeight: FontWeight.w600),
-                      )),
-                    ),
-                    Expanded(
-                        child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-                      child: TextFormField(
-                        controller: recipientController,
-                        focusNode: focusnodes[7],
-                        onFieldSubmitted: (v) => focusBoard(8),
-                        cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: screenWidth * 0.02),
-                            focusedBorder: OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(30, 0, 0, 0)))),
-                      ),
-                    ))
-                  ],
-                ),
-                Container(
-                  width: screenWidth * 0.88,
-                  height: 1,
-                  color: Colors.black26,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      width: screenWidth * 0.23,
-                      height: screenWidth * 0.16,
-                      color: leftColor,
-                      child: Center(
-                          child: Text(
-                        '연락처',
-                        style: TextStyle(
-                            fontSize: screenWidth * 0.032,
-                            fontWeight: FontWeight.w600),
-                      )),
-                    ),
-                    Expanded(
-                        child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-                      child: TextFormField(
-                        controller: recipientPhoneController,
-                        focusNode: focusnodes[8],
-                        cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: screenWidth * 0.02),
-                            focusedBorder: OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(30, 0, 0, 0)))),
-                      ),
-                    ))
-                  ],
-                ),
-                Container(
-                  width: screenWidth * 0.88,
-                  height: 1,
-                  color: Colors.black26,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      width: screenWidth * 0.23,
-                      height: screenWidth * 0.32,
-                      decoration: BoxDecoration(
-                          color: leftColor,
-                          borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(10))),
-                      child: Center(
-                          child: Text(
-                        '주소',
-                        style: TextStyle(
-                            fontSize: screenWidth * 0.032,
-                            fontWeight: FontWeight.w600),
-                      )),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              height: screenWidth * 0.12,
-                              width: screenWidth * 0.44,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.01),
-                              decoration: BoxDecoration(
-                                  color: recipientAddress == null
-                                      ? Colors.transparent
-                                      : Color.fromARGB(30, 0, 0, 0),
-                                  border: Border.all(
-                                      color: Color.fromARGB(30, 0, 0, 0),
-                                      width: 1),
-                                  borderRadius: BorderRadius.circular(5)),
-                              alignment: Alignment.center,
-                              child: Text(
-                                recipientAddress ?? '',
-                                maxLines: 2,
-                                style: TextStyle(
-                                    color: Colors.black45,
-                                    overflow: TextOverflow.visible),
-                              ),
-                            ),
-                            SizedBox(
-                              width: screenWidth * 0.01,
-                            ),
-                            TextButton(
-                                onPressed: () async {
-                                  KopoModel? model = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => RemediKopo()));
-                                  setState(() {
-                                    if (model != null) {
-                                      recipientAddress =
-                                          '${model.address!} ${model.buildingName}';
-                                    }
-                                  });
-                                },
-                                style: const ButtonStyle(
-                                    minimumSize:
-                                        MaterialStatePropertyAll(Size(0, 0)),
-                                    padding: MaterialStatePropertyAll(
-                                        EdgeInsets.zero),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap),
-                                child: Container(
-                                  width: screenWidth * 0.16,
-                                  height: screenWidth * 0.12,
-                                  decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 88, 166, 230),
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Center(
-                                      child: Text(
-                                    '검색',
-                                    style: TextStyle(
-                                        fontSize: screenWidth * 0.038,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
-                                  )),
-                                ))
-                          ],
-                        ),
-                        SizedBox(
-                          height: screenWidth * 0.02,
-                        ),
-                        SizedBox(
-                            height: screenWidth * 0.12,
-                            width: screenWidth * 0.64,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.02),
-                              child: TextFormField(
-                                controller: recipientAddressController,
-                                focusNode: focusnodes[9],
-                                cursorColor: Colors.black,
-                                decoration: InputDecoration(
-                                    hintText: '상세주소',
-                                    contentPadding: EdgeInsets.symmetric(
-                                        horizontal: screenWidth * 0.02),
-                                    focusedBorder: OutlineInputBorder(),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                                Color.fromARGB(30, 0, 0, 0)))),
-                              ),
-                            )),
-                      ],
-                    )
-                  ],
-                ),
-              ]),
+                  borderRadius: BorderRadius.circular(5)),
+              padding: EdgeInsets.symmetric(
+                  vertical: screenWidth * 0.05, horizontal: screenWidth * 0.02),
+              child: Text(
+                '  ⦁ 제주 드론배송센터(상모리)',
+                style:
+                    TextStyle(fontSize: screenWidth * 0.04, color: Colors.grey),
+              ),
             ),
             SizedBox(
               height: screenWidth * 0.06,
