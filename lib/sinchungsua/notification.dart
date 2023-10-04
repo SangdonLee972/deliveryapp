@@ -27,17 +27,20 @@ class AppliCationNotificationPage extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => const ApplicationPage()));
                 },
+                style: const ButtonStyle(
+                    padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                    overlayColor: MaterialStatePropertyAll(Colors.black12)),
                 child: Container(
                   width: screenWidth * 0.9,
                   height: screenWidth * 0.15,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey),
+                      color: Colors.black26),
                   alignment: Alignment.center,
                   child: Text(
                     '신청서 작성하기',
                     style: TextStyle(
-                        color: Colors.black, fontSize: screenWidth * 0.045),
+                        color: Colors.white, fontSize: screenWidth * 0.045),
                   ),
                 )),
           )

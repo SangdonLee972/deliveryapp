@@ -15,6 +15,7 @@ class EmailLogin {
       {required String email,
       required String password,
       required String name,
+      required String add,
       required String address,
       required String fcmid,
       required String phoneNumber}) async {
@@ -28,6 +29,7 @@ class EmailLogin {
         'name': name,
         'id': uid,
         'type': 'user',
+        'add': add,
         'orders': [],
         'address': address,
         'fcmid': fcmid,

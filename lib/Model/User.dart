@@ -5,6 +5,7 @@ class UserInstance {
   String? phoneNumber;
   List<String> orders;
   String? type;
+  String? add;
   String? address;
 
   UserInstance(
@@ -14,6 +15,7 @@ class UserInstance {
       this.type,
       required this.orders,
       this.phoneNumber,
+      this.add,
       this.address});
 
   static UserInstance instance = UserInstance(orders: []);
@@ -25,6 +27,7 @@ class UserInstance {
         fcmid: user['fcmid'],
         id: user['id'],
         type: user['type'],
+        add: user['add'],
         address: user['address'],
         orders: List<String>.from(user['orders']));
   }
@@ -33,6 +36,7 @@ class UserInstance {
     return {
       'name': name,
       'address': address,
+      'add': add,
       'type': type,
       'orders': orders,
       'id': id,

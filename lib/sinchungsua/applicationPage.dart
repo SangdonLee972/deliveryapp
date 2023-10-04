@@ -62,6 +62,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
   ];
   int quantity = 1;
 
+  @override
   void dispose() {
     urlController.dispose();
     productNameController.dispose();
@@ -73,7 +74,6 @@ class _ApplicationPageState extends State<ApplicationPage> {
     recipientController.dispose();
     recipientPhoneController.dispose();
     recipientAddressController.dispose();
-
 
     for (int i = 0; i < 10; i++) {
       focusnodes[i].dispose();
@@ -138,7 +138,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
                 color: Colors.black,
               )),
             ));
-    String id = Uuid().v4();
+    String id = const Uuid().v4();
     OBJ obj = OBJ(
         objUrl: urlController.text,
         objName: productNameController.text,
@@ -170,7 +170,9 @@ class _ApplicationPageState extends State<ApplicationPage> {
       Navigator.pop(context);
       return false;
     }
-    Navigator.pop(context);
+    if (context.mounted) {
+      Navigator.pop(context);
+    }
     return true;
   }
 
@@ -179,7 +181,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
         context: context,
         builder: (context) {
           return Scaffold(
-            backgroundColor: Color.fromARGB(33, 0, 0, 0),
+            backgroundColor: const Color.fromARGB(33, 0, 0, 0),
             body: Center(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -239,12 +241,16 @@ class _ApplicationPageState extends State<ApplicationPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    if(UserInstance.instance.address != null)
-      {
-        recipientAddressController.text = UserInstance.instance.address!;
+  void initState() {
+    super.initState();
+    if (UserInstance.instance.address != null) {
+      recipientAddressController.text = UserInstance.instance.address!;
+    }
+    recipientAddress = UserInstance.instance.add;
+  }
 
-      }
+  @override
+  Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     if (isMore) {
       agreeHeight = null;
@@ -829,20 +835,22 @@ class _ApplicationPageState extends State<ApplicationPage> {
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: screenWidth * 0.02),
-                                // TextFormField 위젯
-                                child:TextFormField(
-                                  controller: recipientAddressController,
-                                  focusNode: focusnodes[9],
-                                  cursorColor: Colors.black,
-                                  decoration: InputDecoration(
-                                    hintText: '상세주소',
-                                    contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-                                    focusedBorder: OutlineInputBorder(),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Color.fromARGB(30, 0, 0, 0)),
-                                    ),
+                              // TextFormField 위젯
+                              child: TextFormField(
+                                controller: recipientAddressController,
+                                focusNode: focusnodes[9],
+                                cursorColor: Colors.black,
+                                decoration: InputDecoration(
+                                  hintText: '상세주소',
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: screenWidth * 0.02),
+                                  focusedBorder: const OutlineInputBorder(),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color.fromARGB(30, 0, 0, 0)),
                                   ),
                                 ),
+                              ),
                             )),
                       ],
                     )
