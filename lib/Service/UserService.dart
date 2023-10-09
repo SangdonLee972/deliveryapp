@@ -13,6 +13,7 @@ class UserService {
       'id': user.id,
       'phoneNumber': user.phoneNumber,
       'address': user.address,
+      'add': user.add,
       'username': user.name,
       'orders': user.orders,
       'type': user.type,
@@ -27,8 +28,7 @@ class UserService {
 
   Future<UserInstance?> getUserFromID(String userID) async {
     try {
-      DocumentSnapshot orderSnapshot =
-      await usersCollection.doc(userID).get();
+      DocumentSnapshot orderSnapshot = await usersCollection.doc(userID).get();
       if (orderSnapshot.exists) {
         return UserInstance.fromMap(
             orderSnapshot.data() as Map<String, dynamic>);
@@ -40,7 +40,6 @@ class UserService {
       return null; // 에러 발생 시 null 반환
     }
   }
-
 
 // 다른 필요한 메서드 추가
 }

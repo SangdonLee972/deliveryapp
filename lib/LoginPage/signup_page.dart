@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:remedi_kopo/remedi_kopo.dart';
 
 import '../alert_error.dart';
 import 'login_function.dart';
@@ -13,6 +14,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   List<String?> strings = [null, null, null, null, null, null];
+  String? recipientAddress;
 
   List<TextEditingController> controllers = [
     TextEditingController(),
@@ -22,7 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
     TextEditingController()
   ];
 
-  List<String> titles = ['이름', '주소', '연락처', '비밀번호', '비밀번호 재입력'];
+  List<String> titles = ['이름', '상세주소', '연락처', '비밀번호', '비밀번호 재입력'];
   List<FocusNode> focusList = [
     FocusNode(),
     FocusNode(),
@@ -56,9 +58,11 @@ class _SignUpPageState extends State<SignUpPage> {
           strings[0] = '이름을 입력해주세요';
         });
         focusBoard(0);
+      } else if (recipientAddress == null) {
+        OverlaySetting().showErrorAlert(context, '주소를 선택해주세요');
       } else if (controllers[1].text.isEmpty) {
         setState(() {
-          strings[1] = '주소를 입력해주세요';
+          strings[1] = '상세주소를 입력해주세요';
         });
         focusBoard(1);
       } else if (controllers[2].text.isEmpty) {
@@ -108,26 +112,29 @@ class _SignUpPageState extends State<SignUpPage> {
           email: controllers[3].text,
           password: controllers[4].text,
           name: controllers[0].text,
+          add: recipientAddress!,
           fcmid: token,
         );
 
         Navigator.pop(context);
-        if (trySingup == 200) {
-          Navigator.pop(context);
-          OverlaySetting setting = OverlaySetting();
-          setting.showErrorAlert(context, '회원가입이 되었습니다.');
-        } else if (trySingup == 401) {
-          OverlaySetting setting = OverlaySetting();
-          setting.showErrorAlert(context, '비밀번호가 너무 약합니다.\n다시 시도해주세요');
-        } else if (trySingup == 402) {
-          OverlaySetting setting = OverlaySetting();
-          setting.showErrorAlert(context, '이미 존재하는 전화번호입니다.\n다시 시도해주세요');
-        } else if (trySingup == 403) {
-          OverlaySetting setting = OverlaySetting();
-          setting.showErrorAlert(context, '회원가입에 실패하였습니다.\n다시 시도해주세요');
-        } else if (trySingup == 405) {
-          OverlaySetting setting = OverlaySetting();
-          setting.showErrorAlert(context, '회원가입도중 문제가 발생했습니다..\n다시 시도해주세요');
+        if (context.mounted) {
+          if (trySingup == 200) {
+            Navigator.pop(context);
+            OverlaySetting setting = OverlaySetting();
+            setting.showErrorAlert(context, '회원가입이 되었습니다.');
+          } else if (trySingup == 401) {
+            OverlaySetting setting = OverlaySetting();
+            setting.showErrorAlert(context, '비밀번호가 너무 약합니다.\n다시 시도해주세요');
+          } else if (trySingup == 402) {
+            OverlaySetting setting = OverlaySetting();
+            setting.showErrorAlert(context, '이미 존재하는 전화번호입니다.\n다시 시도해주세요');
+          } else if (trySingup == 403) {
+            OverlaySetting setting = OverlaySetting();
+            setting.showErrorAlert(context, '회원가입에 실패하였습니다.\n다시 시도해주세요');
+          } else if (trySingup == 405) {
+            OverlaySetting setting = OverlaySetting();
+            setting.showErrorAlert(context, '회원가입도중 문제가 발생했습니다..\n다시 시도해주세요');
+          }
         }
       }
       isClick = false;
@@ -193,7 +200,7 @@ class _SignUpPageState extends State<SignUpPage> {
           child: SingleChildScrollView(
         child: Column(children: [
           Container(
-            width: screenWidth * 0.85,
+            width: screenWidth * 0.89,
             padding: EdgeInsets.symmetric(vertical: screenWidth * 0.05),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(10)),
@@ -217,37 +224,126 @@ class _SignUpPageState extends State<SignUpPage> {
                       SizedBox(
                         height: screenWidth * 0.07,
                       ),
-                      for (int i = 0; i < 4; i++)
+                      SizedBox(
+                        height: screenWidth * 0.18,
+                        child: MyTextFormField(0, screenWidth),
+                      ),
+                      SizedBox(
+                        height: screenWidth * 0.02,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '주소',
+                            style: TextStyle(fontSize: screenWidth * 0.038),
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                width: screenWidth * 0.53,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: screenWidth * 0.035,
+                                    horizontal: screenWidth * 0.02),
+                                decoration: BoxDecoration(
+                                    color: recipientAddress == null
+                                        ? Colors.transparent
+                                        : const Color.fromARGB(30, 18, 17, 17),
+                                    border: Border.all(
+                                        color: Colors.black38, width: 1),
+                                    borderRadius: BorderRadius.circular(10)),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  recipientAddress ?? '',
+                                  maxLines: 2,
+                                  style: const TextStyle(
+                                      color: Colors.black45,
+                                      overflow: TextOverflow.visible),
+                                ),
+                              ),
+                              SizedBox(
+                                width: screenWidth * 0.01,
+                              ),
+                              TextButton(
+                                  onPressed: () async {
+                                    KopoModel? model = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RemediKopo()));
+                                    setState(() {
+                                      if (model != null) {
+                                        recipientAddress =
+                                            '${model.address!} ${model.buildingName}';
+                                      }
+                                    });
+                                  },
+                                  style: const ButtonStyle(
+                                      minimumSize:
+                                          MaterialStatePropertyAll(Size(0, 0)),
+                                      padding: MaterialStatePropertyAll(
+                                          EdgeInsets.zero),
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap),
+                                  child: Container(
+                                    width: screenWidth * 0.16,
+                                    height: screenWidth * 0.12,
+                                    decoration: BoxDecoration(
+                                        color:
+                                            Color.fromARGB(255, 124, 189, 242),
+                                        borderRadius: BorderRadius.circular(5)),
+                                    child: Center(
+                                        child: Text(
+                                      '검색',
+                                      style: TextStyle(
+                                          fontSize: screenWidth * 0.038,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    )),
+                                  ))
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: screenWidth * 0.02,
+                      ),
+                      for (int i = 1; i < 4; i++)
                         SizedBox(
                           height: screenWidth * 0.18,
                           child: MyTextFormField(i, screenWidth),
                         ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            width: screenWidth * 0.7,
-                            child: TextFormField(
-                              controller: controllers[4],
-                              cursorColor: Colors.black,
-                              focusNode: focusList[4],
-                              onFieldSubmitted: (value) {
-                                FocusManager.instance.primaryFocus?.unfocus();
-                                signUp();
-                              },
-                              decoration: InputDecoration(
-                                  hintText: '${titles[4]}',
-                                  errorText: strings[4],
-                                  contentPadding: EdgeInsets.symmetric(
-                                    horizontal: screenWidth * 0.05,
-                                  ),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10))),
+                      SizedBox(
+                        height: screenWidth * 0.14,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                              width: screenWidth * 0.7,
+                              child: TextFormField(
+                                controller: controllers[4],
+                                cursorColor: Colors.black,
+                                focusNode: focusList[4],
+                                onFieldSubmitted: (value) {
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                  signUp();
+                                },
+                                decoration: InputDecoration(
+                                    hintText: '${titles[4]}',
+                                    errorText: strings[4],
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: screenWidth * 0.05,
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: screenWidth * 0.1,
@@ -293,6 +389,7 @@ class _SignUpPageState extends State<SignUpPage> {
       children: [
         Text(
           titles[idx],
+          style: TextStyle(fontSize: screenWidth * 0.038),
         ),
         SizedBox(
             width: screenWidth * 0.7,

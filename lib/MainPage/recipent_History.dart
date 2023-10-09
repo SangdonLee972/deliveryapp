@@ -159,13 +159,6 @@ class _RecipientHistoryState extends State<RecipientHistory> {
                       const SizedBox(
                         height: 8,
                       ),
-                      Text(
-                        orderModel.id,
-                        style: TextStyle(fontSize: screenWidth * 0.032),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +173,7 @@ class _RecipientHistoryState extends State<RecipientHistory> {
                                   maxLines: 1,
                                   style: TextStyle(
                                       overflow: TextOverflow.ellipsis,
-                                      fontSize: screenWidth * 0.044,
+                                      fontSize: screenWidth * 0.045,
                                       color: const Color.fromARGB(
                                           255, 44, 23, 235),
                                       fontWeight: FontWeight.w600),
