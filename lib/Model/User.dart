@@ -1,3 +1,5 @@
+import 'package:dronapp/Model/item.dart';
+
 class UserInstance {
   String? name;
   String? fcmid;
@@ -7,16 +9,19 @@ class UserInstance {
   String? type;
   String? add;
   String? address;
+  String? selectedStoreId;
+  List<Item> shoppingBasket = [];
 
-  UserInstance(
-      {this.name,
-      this.fcmid,
-      this.id,
-      this.type,
-      required this.orders,
-      this.phoneNumber,
-      this.add,
-      this.address});
+  UserInstance({
+    this.name,
+    this.fcmid,
+    this.id,
+    this.type,
+    required this.orders,
+    this.phoneNumber,
+    this.add,
+    this.address,
+  });
 
   static UserInstance instance = UserInstance(orders: []);
 

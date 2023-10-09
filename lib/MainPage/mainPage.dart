@@ -1,4 +1,5 @@
 import 'package:card_swiper/card_swiper.dart';
+import 'package:dronapp/CUPAGE/home.dart';
 import 'package:dronapp/LoginPage/loginPage.dart';
 import 'package:dronapp/MainPage/profilePage.dart';
 import 'package:dronapp/MainPage/recipent_History.dart';
@@ -191,7 +192,8 @@ class MainPageState extends State<MainPage> {
         Expanded(
             child: TextButton(
           onPressed: () {
-            OverlaySetting().showErrorAlert(context, '준비중입니다');
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CuHomePage()));
           },
           style: const ButtonStyle(
               overlayColor: MaterialStatePropertyAll(Colors.black12),

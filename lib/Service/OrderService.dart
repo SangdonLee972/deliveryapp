@@ -7,6 +7,10 @@ class OrderService {
       FirebaseFirestore.instance.collection('orders');
 
   Future<void> createOrder(OrderModel order) async {
+    List<Map<String, dynamic>> itemsAsMaps = [];
+    if (order.items != null) {
+      itemsAsMaps = order.items!.map((item) => item.toMap()).toList();
+    }
     await ordersCollection.doc(order.id).set({
       'id': order.id,
       'status': '확인중',
@@ -15,6 +19,7 @@ class OrderService {
       'datetime': order.datetime,
       'price': order.price,
       'type': order.type,
+      'items': itemsAsMaps,
       'obj': {
         'objUrl': order.obj.objUrl,
         'objName': order.obj.objName,

@@ -112,7 +112,7 @@ class _ReverseApplicationPageState extends State<ReverseApplicationPage> {
         picture: '',
         datetime: DateTime.now(),
         price: 0,
-        type: [],
+        type: ['역배송'],
         obj: obj,
         deliveryInfo: deliveryInfo);
     OrderService service = OrderService();

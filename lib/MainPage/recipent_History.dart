@@ -169,7 +169,12 @@ class _RecipientHistoryState extends State<RecipientHistory> {
                               SizedBox(
                                 width: screenWidth * 0.58,
                                 child: Text(
-                                  orderModel.obj.objName,
+                                  (orderModel.type.isNotEmpty &&
+                                          orderModel.type[0] == '편의점배송')
+                                      ? orderModel.items!.length > 2
+                                          ? '${orderModel.items![0].name} 외 ${orderModel.items!.length - 1}개'
+                                          : orderModel.items![0].name
+                                      : orderModel.obj.objName,
                                   maxLines: 1,
                                   style: TextStyle(
                                       overflow: TextOverflow.ellipsis,

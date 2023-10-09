@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dronapp/Model/item.dart';
 
 import 'DeliveryInformation.dart';
 import 'OBJ.dart';
@@ -11,6 +12,7 @@ class OrderModel {
   final DateTime datetime;
   final double price;
   final List<String> type;
+  List<Item>? items;
   final OBJ obj;
   final DeliveryInformation deliveryInfo;
 
@@ -24,6 +26,7 @@ class OrderModel {
     required this.type,
     required this.obj,
     required this.deliveryInfo,
+    this.items,
   });
 
   Map<String, dynamic> toMap() {
@@ -40,37 +43,42 @@ class OrderModel {
       'obj': obj?.toMap() ?? {}, // obj가 null이면 빈 Map 사용
       'deliveryInfo':
           deliveryInfo?.toMap() ?? {}, // deliveryInfo가 null이면 빈 Map 사용
+      'items': items
     };
   }
 
   static OrderModel fromMap(Map<String, dynamic> map) {
+    List<Map<String, dynamic>> json = [];
+    if (map['items'] != null) {
+      json = (map['items'] as List<dynamic>).cast<Map<String, dynamic>>();
+    }
     return OrderModel(
-      id: map['id'] ?? '',
-      status: map['status'] ?? '',
-      userId: map['userId'] ?? '',
-      picture: map['picture'] ?? '',
-      datetime: map['datetime'] is Timestamp
-          ? (map['datetime'] as Timestamp).toDate()
-          : DateTime.now(), // Timestamp 타입으로 변환
-      price: map['price'] != null ? map['price'].toDouble() : 0.0,
-      type: map['type'] != null ? List<String>.from(map['type']) : [],
-      obj: map['obj'] != null
-          ? OBJ.fromMap(map['obj'])
-          : OBJ(
-              objUrl: 'your_obj_url',
-              objName: 'your_obj_name',
-              objPrice: 10.0,
-              objCount: 2,
-              objSize: 'large',
-              objMass: 0.5,
-            ),
-      deliveryInfo: map['deliveryInfo'] != null
-          ? DeliveryInformation.fromMap(map['deliveryInfo'])
-          : DeliveryInformation(
-              name: 'John Doe',
-              phoneNumber: '123-456-7890',
-              address: '123 Main St',
-            ),
-    );
+        id: map['id'] ?? '',
+        status: map['status'] ?? '',
+        userId: map['userId'] ?? '',
+        picture: map['picture'] ?? '',
+        datetime: map['datetime'] is Timestamp
+            ? (map['datetime'] as Timestamp).toDate()
+            : DateTime.now(), // Timestamp 타입으로 변환
+        price: map['price'] != null ? map['price'].toDouble() : 0.0,
+        type: map['type'] != null ? List<String>.from(map['type']) : [],
+        obj: map['obj'] != null
+            ? OBJ.fromMap(map['obj'])
+            : OBJ(
+                objUrl: 'your_obj_url',
+                objName: 'your_obj_name',
+                objPrice: 10.0,
+                objCount: 2,
+                objSize: 'large',
+                objMass: 0.5,
+              ),
+        deliveryInfo: map['deliveryInfo'] != null
+            ? DeliveryInformation.fromMap(map['deliveryInfo'])
+            : DeliveryInformation(
+                name: 'John Doe',
+                phoneNumber: '123-456-7890',
+                address: '123 Main St',
+              ),
+        items: json.map((itemData) => Item.fromMap(itemData)).toList());
   }
 }
