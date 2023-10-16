@@ -16,57 +16,65 @@ class gmPage extends StatefulWidget {
   State<gmPage> createState() => gmPageState();
 }
 
-class gmPageState extends State<gmPage> {
+class gmPageState extends State<gmPage> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   OrderService orderService = OrderService();
   bool isLoading = true;
   List<OrderModel> orderList = [];
 
-  void addmenu() async {
-    OrderService orderService = OrderService();
+  void fetchInitialData() async {
+    // 여기서 데이터를 가져옵니다. 예를 들면:
 
-// 주문 추가 예시
-    await orderService.addOrder(
-      '확인중', // status
-      'user123', // userId
-      '', // picture
-      DateTime.now(), // datetime
-      50.0, // price
-      ['type1', 'type2'], // type
-      'obj_url', // objUrl
-      'obj_name', // objName
-      10.0, // objPrice
-      2, // objCount
-      'large', // objSize
-      0.5, // objMass
-      'John Doe', // deliveryName
-      '123-456-7890', // deliveryPhoneNumber
-      '123 Main St', // deliveryAddress
-    );
+    orderList = (await orderService.getAllOrdersStream()) as List<OrderModel>; // 이 함수는 실제로 구현해야 합니다.
+
+    // 데이터가 로드된 후 isLoading 값을 false로 설정합니다.
+    setState(() {
+      isLoading = false;
+    });
   }
+
+
+
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
   }
-
+  @override
+  void dispose() {
+    _tabController.dispose();  // Always dispose controllers when they're no longer needed
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return isLoading
         ? Scaffold(
-            appBar: AppBar(
-              title: Text('배송 신청 목록'),
-              backgroundColor: Colors.blue,
-            ),
-            drawer: Drawer(
-                child: ListView(padding: EdgeInsets.zero, children: [
+        appBar: AppBar(
+          title: Text('배송 신청 목록'),
+          backgroundColor: Colors.blue,
+          bottom: TabBar(
+            controller: _tabController, // assign the controller
+            tabs: [
+              Tab(text: '택배배송'),
+              Tab(text: '역배송'),
+              Tab(text: '편의점배송'),
+            ],
+
+          ),
+        ),
+
+
+        drawer: Drawer(
+            child: ListView(padding: EdgeInsets.zero, children: [
               Container(
                 padding: EdgeInsets.only(left: 15, bottom: 15),
                 height: screenWidth * 0.4,
                 decoration: const BoxDecoration(
                     color: Colors.blue,
                     borderRadius:
-                        BorderRadius.vertical(bottom: Radius.circular(30))),
+                    BorderRadius.vertical(bottom: Radius.circular(30))),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -76,13 +84,14 @@ class gmPageState extends State<gmPage> {
                         style: TextStyle(
                             color: Colors.white, fontSize: screenWidth * 0.055),
                       ),
-                      SizedBox(
-                        width: screenWidth * 0.6,
-                        child: Text(UserInstance.instance.id!,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: screenWidth * 0.035)),
+
+                      Text(
+                        "관리자",
+                        style: TextStyle(
+                            color: Colors.white, fontSize: screenWidth * 0.035),
                       ),
+
+
                       SizedBox(
                         height: screenWidth * 0.01,
                       ),
@@ -98,98 +107,113 @@ class gmPageState extends State<gmPage> {
                   //         builder: (context) => const ProfilePage()));
                   // setState(() {});
 
-                    FirebaseAuth.instance.signOut();
-                    Navigator.popUntil(context, (route) => false);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
-                     setState(() {});
+                  FirebaseAuth.instance.signOut();
+                  Navigator.popUntil(context, (route) => false);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                  setState(() {});
                 },
                 title: Text('로그아웃'),
               ),
             ])),
-            body: StreamBuilder<List<OrderModel>>(
-              stream: orderService.getAllOrdersStream(), // 스트림을 얻는 메서드 활용
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<OrderModel> orderHistory = snapshot.data!;
 
-                  if (orderHistory.isEmpty) {
-                    return Center(child: Text('주문 내역이 없습니다.'));
-                  }
-
-              if (orderHistory.isEmpty) {
-                return Center(child: Text('주문 내역이 없습니다.'));
-              }
-
-              DateTime? lastDate;
-              // '상품 인수'인 주문만 필터링하고 '상품 인수'인 주문이 있을 때 print를 실행합니다.
-
-                  return ListView.builder(
-                    itemCount: orderHistory.length,
-                    itemBuilder: (context, index) {
-                      Map<String, dynamic> orderMap =
-                          orderHistory[index].toMap();
-                      DateTime nowDate = orderHistory[index].datetime;
-                      print(nowDate);
-                      if (lastDate == null ||
-                          (lastDate!.year != nowDate.year ||
-                              lastDate!.month != nowDate.month ||
-                              lastDate!.day != nowDate.day)) {
-                        lastDate = orderHistory[index].datetime;
-                        return Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: screenWidth * 0.32,
-                                  height: 1,
-                                  color: Colors.black26,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                  height: screenWidth * 0.1,
-                                ),
-                                Text(
-                                  DateFormat('yyyy년MM월dd일')
-                                      .format(orderHistory[index].datetime),
-                                  style: TextStyle(
-                                      fontSize: screenWidth * 0.033,
-                                      color: Colors.black26),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Container(
-                                  width: screenWidth * 0.32,
-                                  height: 1,
-                                  color: Colors.black26,
-                                ),
-                              ],
-                            ),
-                            ListItemWidget(orderMap, index)
-                          ],
-                        );
-                      }
-                      return ListItemWidget(orderMap, index);
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('에러 발생: ${snapshot.error}'));
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              },
-            ))
+        body: TabBarView(
+          controller: _tabController, // assign the controller
+          children: [
+            _buildOrderList('택배배송',screenWidth),
+            _buildOrderList('역배송',screenWidth),
+            _buildOrderList('편의점배송',screenWidth),
+          ],
+        )
+    )
         : Container(
-            color: Colors.white,
-            alignment: Alignment.center,
-            child: Text(
-              '로딩중',
-              style: TextStyle(
-                fontSize: 100,
-              ),
-            ),
-          );
+      color: Colors.white,
+      alignment: Alignment.center,
+      child: Text(
+        '로딩중',
+        style: TextStyle(
+          fontSize: 100,
+        ),
+      ),
+    );
+
   }
+
+  Widget _buildOrderList(String type,double screenWidth) {
+    return StreamBuilder<List<OrderModel>>(
+      stream: orderService.getAllOrdersStream(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<OrderModel> orders = snapshot.data!.where((order) => order.type.contains(type)).toList();
+
+          if (type == '택배배송') {
+            orders = snapshot.data!.where((order) => order.type.isEmpty || order.type.contains(type)).toList();
+          } else {
+            orders = snapshot.data!.where((order) => order.type.contains(type)).toList();
+          }
+
+          if (orders.isEmpty) {
+            return Center(child: Text('$type 주문 내역이 없습니다.'));
+          }
+
+
+          if (orders.isEmpty) {
+            return Center(child: Text('$type 주문 내역이 없습니다.'));
+          }
+
+          DateTime? lastDate;
+          return ListView.builder(
+            itemCount: orders.length,
+            itemBuilder: (context, index) {
+              int reverseIndex = orders.length - 1 - index;
+              Map<String, dynamic> orderMap = orders[index].toMap();
+              DateTime nowDate = orders[index].datetime;
+
+              if (lastDate == null ||
+                  (lastDate!.year != nowDate.year ||
+                      lastDate!.month != nowDate.month ||
+                      lastDate!.day != nowDate.day)) {
+                lastDate = orders[index].datetime;
+
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: screenWidth * 0.32,
+                          height: 1,
+                          color: Colors.black26,
+                        ),
+                        SizedBox(width: 10, height: screenWidth * 0.1),
+                        Text(
+                          DateFormat('yyyy년MM월dd일').format(orders[index].datetime),
+                          style: TextStyle(
+                              fontSize: screenWidth * 0.033,
+                              color: Colors.black26),
+                        ),
+                        SizedBox(width: 10),
+                        Container(
+                          width: screenWidth * 0.32,
+                          height: 1,
+                          color: Colors.black26,
+                        ),
+                      ],
+                    ),
+                    ListItemWidget(orderMap, reverseIndex)
+                  ],
+                );
+              }
+              return ListItemWidget(orderMap, reverseIndex);
+            },
+          );
+        } else if (snapshot.hasError) {
+          return Center(child: Text('에러 발생: ${snapshot.error}'));
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
+
 }

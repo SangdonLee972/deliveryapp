@@ -46,11 +46,18 @@ class OrderModel {
       'items': items
     };
   }
-
   static OrderModel fromMap(Map<String, dynamic> map) {
     List<Map<String, dynamic>> json = [];
-    if (map['items'] != null) {
-      json = (map['items'] as List<dynamic>).cast<Map<String, dynamic>>();
+    List<Item>? _items;
+    if (map['items'] != null && (map['items'] as List).isNotEmpty) {
+      if (map['items'].first is Map<String, dynamic>) {
+        List<Map<String, dynamic>> json = (map['items'] as List<dynamic>).cast<Map<String, dynamic>>();
+        _items = json.map((itemData) => Item.fromMap(itemData)).toList();
+      } else if (map['items'].first is Item) {
+        _items = List<Item>.from(map['items']);
+      } else {
+        _items = [];
+      }
     }
     return OrderModel(
         id: map['id'] ?? '',
@@ -65,20 +72,21 @@ class OrderModel {
         obj: map['obj'] != null
             ? OBJ.fromMap(map['obj'])
             : OBJ(
-                objUrl: 'your_obj_url',
-                objName: 'your_obj_name',
-                objPrice: 10.0,
-                objCount: 2,
-                objSize: 'large',
-                objMass: 0.5,
-              ),
+          objUrl: 'your_obj_url',
+          objName: 'your_obj_name',
+          objPrice: 10.0,
+          objCount: 2,
+          objSize: 'large',
+          objMass: 0.5,
+        ),
         deliveryInfo: map['deliveryInfo'] != null
             ? DeliveryInformation.fromMap(map['deliveryInfo'])
             : DeliveryInformation(
-                name: 'John Doe',
-                phoneNumber: '123-456-7890',
-                address: '123 Main St',
-              ),
-        items: json.map((itemData) => Item.fromMap(itemData)).toList());
+          name: 'John Doe',
+          phoneNumber: '123-456-7890',
+          address: '123 Main St',
+        ),
+    items: _items,);
   }
+
 }

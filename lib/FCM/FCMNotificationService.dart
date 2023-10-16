@@ -41,6 +41,39 @@ class FCMNotificationService{
     }
   }
 
+  Future<void> pushIpgo(String token) async {
+    try {
+      final http.Response response = await http.post(
+        Uri.parse('$pushFcmUrl/ipgo'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode({'token': token}),
+      );
+      print('pushFCM: success');
+    } catch (e) {
+      print('pushFAQ: $e');
+      throw Exception("pushFAQ: $e");
+    }
+  }
+
+  Future<void> pushPay(String token) async {
+    try {
+      final http.Response response = await http.post(
+        Uri.parse('$pushFcmUrl/paysuccess'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode({'token': token}),
+      );
+      print('pushFCM: success');
+    } catch (e) {
+      print('pushFAQ: $e');
+      throw Exception("pushFAQ: $e");
+    }
+  }
+
+
 
 
 
