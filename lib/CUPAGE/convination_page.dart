@@ -14,8 +14,34 @@ class ConvinationPage extends StatefulWidget {
 
 class _ConvinationPageState extends State<ConvinationPage> {
   var f = NumberFormat('###,###,###,###');
-  bool isLoading = false;
-  List<Item> items = [];
+  bool isLoading = true;
+  List<Item> items = [
+    Item(
+        name: 'CJ 햇반200G(3입)',
+        price: 5700,
+        imgUrl: 'asset/image/rice.png',
+        quantity: 1),
+    Item(
+        name: '오모리김치찌개라면(봉지)4입',
+        price: 5800,
+        imgUrl: 'asset/image/omori.png',
+        quantity: 1),
+    Item(
+        name: '보솜이물티슈60매(캡형)',
+        price: 5700,
+        imgUrl: 'asset/image/tissue.png',
+        quantity: 1),
+    Item(
+        name: '페이스6일회용면도기3입',
+        price: 6900,
+        imgUrl: 'asset/image/Shaver.png',
+        quantity: 1),
+    Item(
+        name: '메디안커플치약칫솔세트',
+        price: 5900,
+        imgUrl: 'asset/image/toothbrush.png',
+        quantity: 1)
+  ];
 
   void getData() async {
     ConvenienceService service = ConvenienceService();
@@ -28,7 +54,7 @@ class _ConvinationPageState extends State<ConvinationPage> {
   @override
   void initState() {
     super.initState();
-    getData();
+    //getData();
   }
 
   @override
@@ -36,7 +62,7 @@ class _ConvinationPageState extends State<ConvinationPage> {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text('CU'),
+        title: Text('GS25'),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         actions: <Widget>[shopBasketButton()],
@@ -94,11 +120,14 @@ class _ConvinationPageState extends State<ConvinationPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${item.name}',
-                    style: TextStyle(
-                        fontSize: screenWidth * 0.045,
-                        fontWeight: FontWeight.w600),
+                  SizedBox(
+                    width: screenWidth * 0.5,
+                    child: Text(
+                      '${item.name}',
+                      style: TextStyle(
+                          fontSize: screenWidth * 0.043,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
                   SizedBox(
                     height: screenWidth * 0.02,
@@ -111,9 +140,9 @@ class _ConvinationPageState extends State<ConvinationPage> {
               ),
               ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
+                  child: Image.asset(
                     item.imgUrl,
-                    fit: BoxFit.fitHeight,
+                    fit: BoxFit.fitWidth,
                     width: screenWidth * 0.2,
                     height: screenWidth * 0.2,
                   )),

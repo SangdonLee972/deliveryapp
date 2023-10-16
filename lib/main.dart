@@ -1,4 +1,5 @@
 import 'package:dronapp/GMPage/gmPage.dart';
+import 'package:dronapp/MainPage/frame.dart';
 import 'package:dronapp/MainPage/mainPage.dart';
 import 'package:dronapp/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,6 +49,6 @@ class MyApp extends StatelessWidget {
             home: (UserInstance.instance.type != null &&
                     UserInstance.instance.type == 'Manager')
                 ? const gmPage()
-                : const MainPage()));
+                : const UserMainFrame()));
   }
 }

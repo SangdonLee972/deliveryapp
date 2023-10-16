@@ -26,7 +26,52 @@ class _CuHomePageState extends State<CuHomePage> {
               SizedBox(
                 height: 10,
               ),
-              storeButton(screenWidth)
+              storeButton(screenWidth),
+              Container(
+                width: screenWidth * 0.9,
+                height: screenWidth * 0.5,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Color.fromARGB(51, 97, 97, 97),
+                        offset: Offset(3, 3),
+                        spreadRadius: 3,
+                        blurRadius: 3)
+                  ],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                //border: Border.all(color: Colors.black26, width: 1)),
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Image.asset(
+                  'asset/image/commingsoon.jpg',
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: screenWidth * 0.9,
+                height: screenWidth * 0.5,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Color.fromARGB(51, 97, 97, 97),
+                        offset: Offset(3, 3),
+                        spreadRadius: 3,
+                        blurRadius: 3)
+                  ],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                //border: Border.all(color: Colors.black26, width: 1)),
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Image.asset(
+                  'asset/image/commingsoon.jpg',
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
             ],
           ),
         ));
@@ -63,8 +108,9 @@ class _CuHomePageState extends State<CuHomePage> {
                 borderRadius: BorderRadius.circular(20),
               ),
               //border: Border.all(color: Colors.black26, width: 1)),
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Image.asset(
-                'asset/image/cu.jpg',
+                'asset/image/gs25.png',
                 fit: BoxFit.fitHeight,
               ),
             ),

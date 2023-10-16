@@ -147,7 +147,7 @@ class _SelectMenuPageState extends State<SelectMenuPage> {
                       width: screenWidth * 0.4,
                       height: screenWidth * 0.4,
                     ),
-                    Image.network(
+                    Image.asset(
                       widget.imgUrl,
                       width: screenWidth * 0.4,
                       height: screenWidth * 0.4,
@@ -167,7 +167,7 @@ class _SelectMenuPageState extends State<SelectMenuPage> {
                       Text(
                         widget.menu.name,
                         style: TextStyle(
-                            fontSize: screenWidth * 0.075,
+                            fontSize: screenWidth * 0.065,
                             fontWeight: FontWeight.w600),
                       ),
                       SizedBox(
@@ -178,7 +178,7 @@ class _SelectMenuPageState extends State<SelectMenuPage> {
                         children: [
                           Text(
                             '가격',
-                            style: TextStyle(fontSize: screenWidth * 0.05),
+                            style: TextStyle(fontSize: screenWidth * 0.045),
                           ),
                           Text(
                             '${f.format(widget.menu.price)}원',
@@ -206,7 +206,7 @@ class _SelectMenuPageState extends State<SelectMenuPage> {
                   children: [
                     Text(
                       '수량',
-                      style: TextStyle(fontSize: screenWidth * 0.05),
+                      style: TextStyle(fontSize: screenWidth * 0.045),
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(
@@ -289,7 +289,7 @@ class _SelectMenuPageState extends State<SelectMenuPage> {
                     child: Container(
                       height: screenWidth * 0.15,
                       decoration: BoxDecoration(
-                          color: Colors.purple,
+                          color: Color.fromARGB(255, 131, 198, 249),
                           borderRadius: BorderRadius.circular(15)),
                       child: TextButton(
                           onPressed: () {
@@ -305,8 +305,8 @@ class _SelectMenuPageState extends State<SelectMenuPage> {
                               '${f.format(widget.menu.price * quantity)}원 담기',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: screenWidth * 0.04,
-                                  fontWeight: FontWeight.w600),
+                                  fontSize: screenWidth * 0.042,
+                                  fontWeight: FontWeight.w800),
                             ),
                           )),
                     ),

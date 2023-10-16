@@ -232,13 +232,14 @@ class _ReverseApplicationPageState extends State<ReverseApplicationPage> {
               width: screenWidth * 0.88,
               height: screenWidth * 0.09,
               decoration: BoxDecoration(
-                  border: Border.all(color: leftColor, width: 1),
+                  border: Border.all(color: Colors.black26, width: 1),
                   borderRadius: BorderRadius.circular(5)),
               alignment: Alignment.centerLeft,
               child: Text(
-                '   [(주)나르마] 제주드론배송센터',
-                style:
-                    TextStyle(fontSize: screenWidth * 0.04, color: Colors.grey),
+                '   제주드론배송센터',
+                style: TextStyle(
+                    fontSize: screenWidth * 0.04,
+                    color: const Color.fromARGB(158, 0, 0, 0)),
               ),
             ),
             SizedBox(
@@ -516,13 +517,14 @@ class _ReverseApplicationPageState extends State<ReverseApplicationPage> {
               width: screenWidth * 0.88,
               height: screenWidth * 0.12,
               decoration: BoxDecoration(
-                  border: Border.all(color: leftColor, width: 1),
+                  border: Border.all(color: Colors.black26, width: 1),
                   borderRadius: BorderRadius.circular(5)),
               alignment: Alignment.centerLeft,
               child: Text(
-                '  ⦁ 드론 배송',
-                style:
-                    TextStyle(fontSize: screenWidth * 0.04, color: Colors.grey),
+                '   드론 배송',
+                style: TextStyle(
+                    fontSize: screenWidth * 0.04,
+                    color: const Color.fromARGB(158, 0, 0, 0)),
               ),
             ),
             SizedBox(
@@ -564,11 +566,12 @@ class _ReverseApplicationPageState extends State<ReverseApplicationPage> {
                   border: Border.all(color: Colors.black26, width: 1),
                   borderRadius: BorderRadius.circular(5)),
               padding: EdgeInsets.symmetric(
-                  vertical: screenWidth * 0.05, horizontal: screenWidth * 0.02),
+                  vertical: screenWidth * 0.04, horizontal: screenWidth * 0.02),
               child: Text(
-                '  ⦁ 제주 드론배송센터(상모리)',
-                style:
-                    TextStyle(fontSize: screenWidth * 0.04, color: Colors.grey),
+                '  제주드론배송센터(상모리)',
+                style: TextStyle(
+                    fontSize: screenWidth * 0.04,
+                    color: const Color.fromARGB(158, 0, 0, 0)),
               ),
             ),
             SizedBox(
