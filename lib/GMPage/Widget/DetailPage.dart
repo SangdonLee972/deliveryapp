@@ -58,6 +58,15 @@ class _DetailPageState extends State<DetailPage> {
     await orderRef.update({'status': newStatus});
   }
 
+  String convertToInternationalFormat(String localNumber) {
+    if (localNumber.startsWith("010")) {
+      return "+82" + localNumber.substring(1);
+    }
+    return localNumber;
+  }
+
+
+
   Future<int> _uploadImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -230,7 +239,8 @@ class _DetailPageState extends State<DetailPage> {
 
 
                                 String message = "상품 배송이 시작되었습니다.";
-                                List<String> recipents = [deliveryinfo['phoneNumber']];
+                                List<String> recipents = [convertToInternationalFormat(deliveryinfo['phoneNumber'])];
+                                print(recipents);
 
                                 smsManager sms = smsManager();
                                 sms.sendSMSManager(message, recipents);
@@ -265,7 +275,7 @@ class _DetailPageState extends State<DetailPage> {
 
                                 UserInstance? user = await userService.getUserFromID(widget.order['userId']);
                                 String message = "상품 배송이 완료되었습니다.";
-                                List<String> recipents = [deliveryinfo['phoneNumber']];
+                                List<String> recipents = [convertToInternationalFormat(deliveryinfo['phoneNumber'])];
 
                                 smsManager sms = smsManager();
                                 sms.sendSMSManager(message, recipents);
@@ -550,7 +560,7 @@ class _DetailPageState extends State<DetailPage> {
                                 UserInstance? user = await userService.getUserFromID(widget.order['userId']);
 
                                 String message = "상품 배송이 시작되었습니다.";
-                                List<String> recipents = [widget.order['userId']];
+                                List<String> recipents = [convertToInternationalFormat(deliveryinfo['phoneNumber'])];
 
                                 smsManager sms = smsManager();
                                 sms.sendSMSManager(message, recipents);
@@ -585,7 +595,7 @@ class _DetailPageState extends State<DetailPage> {
 
                                 UserInstance? user = await userService.getUserFromID(widget.order['userId']);
                                 String message = "상품 배송이 완료되었습니다.";
-                                List<String> recipents = [widget.order['userId']];
+                                List<String> recipents = [convertToInternationalFormat(deliveryinfo['phoneNumber'])];
 
                                 smsManager sms = smsManager();
                                 sms.sendSMSManager(message, recipents);
@@ -626,7 +636,7 @@ class _DetailPageState extends State<DetailPage> {
                                 String? firebaseToken = await _firebaseMessaging.getToken();
 
                                 String message = "배송이 입고처리되었습니다.";
-                                List<String> recipents = [widget.order['userId']];
+                                List<String> recipents = [convertToInternationalFormat(deliveryinfo['phoneNumber'])];
 
                                 smsManager sms = smsManager();
                                 sms.sendSMSManager(message, recipents);

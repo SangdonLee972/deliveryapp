@@ -1,6 +1,7 @@
 import 'package:dronapp/GMPage/gmPage.dart';
 import 'package:dronapp/LoginPage/login_function.dart';
 import 'package:dronapp/LoginPage/signup_page.dart';
+import 'package:dronapp/MainPage/frame.dart';
 import 'package:flutter/material.dart';
 
 import '../MainPage/mainPage.dart';
@@ -68,7 +69,7 @@ class LoginPageState extends State<LoginPage> {
 
             if (UserInstance.instance.type == 'user') {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const MainPage()));
+                  MaterialPageRoute(builder: (context) => const UserMainFrame()));
             } else if (UserInstance.instance.type == 'Manager') {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => const gmPage()));

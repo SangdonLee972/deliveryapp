@@ -45,6 +45,8 @@ class _DeliveryDetailPageState extends State<DeliveryDetailPage> {
                 ? Center(
                     child: Image.network(
                       widget.order.picture,
+                      width: 500.0,  // 원하는 너비
+                      height: 500.0, // 원하는 높이
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {
                         // 이미지 로딩 실패 시 표시할 오류 위젯 (텍스트 또는 다른 위젯)

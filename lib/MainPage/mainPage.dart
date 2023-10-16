@@ -299,9 +299,9 @@ class MainPageState extends State<MainPage> {
                     color: Colors.black12,
                     padding: EdgeInsets.symmetric(
                         horizontal: screenWidth * 0.02,
-                        vertical: screenWidth * 0.08),
+                        vertical: screenWidth * 0.05),
                     child: Text(
-                      '특산물 역배송',
+                      '특산물\n역배송',
                       style: TextStyle(
                           color: Colors.blue,
                           fontSize: screenWidth * 0.044,
