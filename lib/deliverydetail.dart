@@ -52,7 +52,7 @@ class _DeliveryDetailPageState extends State<DeliveryDetailPage> {
                       },
                     ),
                   )
-                : Center(child: Text('(현재 업로드된 이미지가 없습니다')),
+                : Center(child: Text('(현재 업로드된 이미지가 없습니다)')),
 
             SizedBox(
               height: screenHeight * 0.05,
@@ -74,8 +74,10 @@ class _DeliveryDetailPageState extends State<DeliveryDetailPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
-                      '${widget.order.obj.objName} ',
-                      style: TextStyle(
+                      widget.order.type.contains("편의점배송")
+                          ? '${widget.order.items?[0].name ?? ''}'
+                          : '${widget.order.obj.objName}',
+                    style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
