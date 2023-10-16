@@ -5,6 +5,7 @@ import 'package:dronapp/FCM/FCMNotificationService.dart';
 import 'package:dronapp/Model/User.dart';
 import 'package:dronapp/Service/UserService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -139,6 +140,9 @@ class _DetailPageState extends State<DetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
+                 Text('배송물품 URL: ${obj['objUrl']}'),
+                 SizedBox(height: screenHeight * 0.02),
                   Text('배송물품 이름: ${obj['objName']}'),
                   SizedBox(height: screenHeight * 0.02),
                   Text('배송물품 가격: ${obj['objPrice']}'),
@@ -155,19 +159,24 @@ class _DetailPageState extends State<DetailPage> {
                   SizedBox(height: screenHeight * 0.02),
                   Text('주문자 주소: ${deliveryinfo['address']}'),
                   SizedBox(height: screenHeight * 0.02),
+
+
+                  Text(formatISOToFullDateTime(widget.order['datetime'] as String)),
+                  SizedBox(height: screenHeight * 0.02),
+
+                  Text('배송 가격: 0원'),
+
+
                 ],
               ),
             ),
           ),
 
           SizedBox(
-            height: screenWidth * 0.1,
+            height: screenWidth * 0.06,
           ),
 
-          Text('주문 ID: ${widget.order['id']}'),
 
-          Text(formatISOToFullDateTime(widget.order['datetime'] as String)),
-          Text('배송 가격: ${widget.order['price']}'),
 
           if (widget.order['status'] == '배송 불가' ||
               widget.order['status'] == '확인중')
@@ -241,6 +250,39 @@ class _DetailPageState extends State<DetailPage> {
                         // await _updateOrderStatus('복귀 준비 완료');
                       },
                     ),
+                    PullDownMenuItem(
+                      title: '배송 입고처리',
+                      onTap: () async {
+                        await _updateStatus('결제완료');
+                        UserService userService = UserService();
+                        FCMNotificationService fcm = FCMNotificationService();
+
+
+                        UserInstance? user = await userService.getUserFromID(widget.order['userId']);
+                        final _firebaseMessaging = FirebaseMessaging.instance;
+                        String? firebaseToken = await _firebaseMessaging.getToken();
+
+
+                        setState(() {
+
+
+                          try {
+
+                            if (user != null && user.fcmid != null) {
+
+                              fcm.pushIpgo(user.fcmid!); // null이 아닌 경우에만 전달
+                              fcm.pushPay(firebaseToken!); // null이 아닌 경우에만 전달
+                            }
+                          } catch (e) {
+                            // 오류 처리
+                            print('오류 발생: $e');
+                          }
+                        });
+                        widget.order['status'] = "결제완료";
+
+                        // await _updateOrderStatus('복귀 준비 완료');
+                      },
+                    ),
                   ],
                   buttonBuilder: (context, showMenu) => CupertinoButton(
                     onPressed: showMenu,
@@ -252,7 +294,7 @@ class _DetailPageState extends State<DetailPage> {
             ),
 
           SizedBox(
-            height: screenWidth * 0.1,
+            height: screenWidth * 0.04,
           ),
 
           // 상세 정보를 표시하는 다른 위젯들을 추가
@@ -340,25 +382,25 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
 
-                // Padding(
-                //   padding: const EdgeInsets.all(10.0),
-                //   child: ElevatedButton(
-                //     style: ElevatedButton.styleFrom(
-                //       backgroundColor: Colors.blue,
-                //     ),
-                //     onPressed: ()  async {
-                //       Navigator.push(
-                //         context,
-                //         MaterialPageRoute(
-                //           builder: (context) => DeliveryDetailPage(
-                //             order: OrderModel.fromMap(widget.order), // widget.items 전체를 전달            // 다른 필요한 데이터도 전달할 수 있음
-                //           ),
-                //         ),
-                //       );
-                //     },
-                //     child: Text('배송조회 페이지 방문'),
-                //   ),
-                // ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                    ),
+                    onPressed: ()  async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DeliveryDetailPage(
+                            order: OrderModel.fromMap(widget.order), // widget.items 전체를 전달            // 다른 필요한 데이터도 전달할 수 있음
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text('배송조회 페이지 방문'),
+                  ),
+                ),
               ],
             )
         ],

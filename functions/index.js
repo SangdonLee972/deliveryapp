@@ -58,3 +58,45 @@ const token = req.body.token;
   });
 });
 
+app.post("/ipgo", (req, res) => {
+const token = req.body.token;
+
+  const payload = {
+    notification: {
+      title: "드론배송 어플리케이션",
+      body: "상품이 입고 처리되었습니다!",
+    },
+  };
+
+   admin.messaging().sendToDevice(token, payload)
+     .then((response) => {
+       console.log("Successfully sent message:", response);
+       console.log(response.results[0].error);
+       return true;
+  })
+  .catch((error) => {
+    console.log("Error sending message:", error);
+  });
+});
+
+
+app.post("/paysuccess", (req, res) => {
+const token = req.body.token;
+
+  const payload = {
+    notification: {
+      title: "드론배송 어플리케이션",
+      body: "결제 처리가 완료되었습니다!",
+    },
+  };
+
+   admin.messaging().sendToDevice(token, payload)
+     .then((response) => {
+       console.log("Successfully sent message:", response);
+       console.log(response.results[0].error);
+       return true;
+  })
+  .catch((error) => {
+    console.log("Error sending message:", error);
+  });
+});

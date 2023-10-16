@@ -35,6 +35,9 @@ class _DeliveryDetailPageState extends State<DeliveryDetailPage> {
               ),
             ),
 
+            Center(child: Text('( 사진이 있을시 아래로 내려서 배송정보를 확인하실 수 있습니다. )',
+            style: TextStyle(fontSize: screenWidth * 0.03
+            ,color: Colors.black45),)),
             SizedBox(height: screenHeight * 0.03),
 
             // 이미지 표시 또는 "이미지 없음" 텍스트 표시
@@ -45,11 +48,11 @@ class _DeliveryDetailPageState extends State<DeliveryDetailPage> {
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {
                         // 이미지 로딩 실패 시 표시할 오류 위젯 (텍스트 또는 다른 위젯)
-                        return Text('이미지를 불러올 수 없습니다');
+                        return Text('(이미지를 불러올 수 없습니다)');
                       },
                     ),
                   )
-                : Center(child: Text('현재 업로드된 이미지가 없습니다')),
+                : Center(child: Text('(현재 업로드된 이미지가 없습니다')),
 
             SizedBox(
               height: screenHeight * 0.05,
